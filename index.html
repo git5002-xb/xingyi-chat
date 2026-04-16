@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>星艺造型 - 在线预约</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #1a1a2e;
+            --accent: #e94560;
+            --accent-light: #ff6b6b;
+            --bg: #0f0f1a;
+            --card: #16213e;
+            --text: #eaeaea;
+            --text-dim: #8892b0;
+            --border: rgba(233, 69, 96, 0.2);
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--card) 100%);
+            padding: 20px;
+            text-align: center;
+            border-bottom: 1px solid var(--border);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header h1 {
+            font-size: 20px;
+            font-weight: 600;
+            background: linear-gradient(135deg, #fff 0%, var(--accent-light) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .header p {
+            font-size: 12px;
+            color: var(--text-dim);
+            margin-top: 4px;
+        }
+
+        /* Chat Container */
+        .chat-container {
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px;
+            padding-bottom: 100px;
+        }
+
+        /* Message Styles */
+        .message {
+            display: flex;
+            margin-bottom: 16px;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .message.ai {
+            justify-content: flex-start;
+        }
+
+        .message.user {
+            justify-content: flex-end;
+        }
+
+        .message-avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            flex-shrink: 0;
+        }
+
+        .message.ai .message-avatar {
+            background: linear-gradient(135deg, var(--accent) 0%, var(--accent-light) 100%);
+            margin-right: 10px;
+        }
+
+        .message.user .message-avatar {
+            background: var(--card);
+            margin-left: 10px;
+        }
+
+        .message-content {
+            max-width: 75%;
+            padding: 12px 16px;
+            border-radius: 16px;
+            font-size: 15px;
+            line-height: 1.5;
+        }
+
+        .message.ai .message-content {
+            background: var(--card);
+            border-bottom-left-radius: 4px;
+        }
+
+        .message.user .message-content {
+            background: linear-gradient(135deg, var(--accent) 0%, var(--accent-light) 100%);
+            color: #fff;
+            border-bottom-right-radius: 4px;
+        }
+
+        .message-content p {
+            margin-bottom: 8px;
+        }
+
+        .message-content p:last-child {
+            margin-bottom: 0;
+        }
+
+        .message-content ul {
+            margin: 8px 0;
+            padding-left: 20px;
+        }
+
+        .message-content li {
+            margin: 4px 0;
+        }
+
+        .message-content strong {
+            color: var(--accent-light);
+        }
+
+        /* Quick Actions */
+        .quick-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 12px;
+        }
+
+        .quick-btn {
+            background: rgba(233, 69, 96, 0.15);
+            border: 1px solid var(--border);
+            color: var(--accent-light);
+            padding: 8px 14px;
+            border-radius: 20px;
+            font-size: 13px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .quick-btn:hover {
+            background: var(--accent);
+            color: #fff;
+        }
+
+        /* Input Area */
+        .input-area {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(to top, var(--bg) 80%, transparent);
+            padding: 20px;
+            padding-top: 40px;
+        }
+
+        .input-wrapper {
+            display: flex;
+            background: var(--card);
+            border-radius: 24px;
+            padding: 4px;
+            border: 1px solid var(--border);
+        }
+
+        .input-wrapper input {
+            flex: 1;
+            background: transparent;
+            border: none;
+            padding: 12px 16px;
+            font-size: 15px;
+            color: var(--text);
+            outline: none;
+        }
+
+        .input-wrapper input::placeholder {
+            color: var(--text-dim);
+        }
+
+        .send-btn {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--accent) 0%, var(--accent-light) 100%);
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.2s;
+        }
+
+        .send-btn:hover {
+            transform: scale(1.05);
+        }
+
+        .send-btn svg {
+            width: 20px;
+            height: 20px;
+            fill: #fff;
+        }
+
+        /* Typing Indicator */
+        .typing {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            padding: 12px 16px;
+            background: var(--card);
+            border-radius: 16px;
+            width: fit-content;
+        }
+
+        .typing span {
+            width: 8px;
+            height: 8px;
+            background: var(--text-dim);
+            border-radius: 50%;
+            animation: bounce 1.4s infinite ease-in-out;
+        }
+
+        .typing span:nth-child(1) { animation-delay: 0s; }
+        .typing span:nth-child(2) { animation-delay: 0.2s; }
+        .typing span:nth-child(3) { animation-delay: 0.4s; }
+
+        @keyframes bounce {
+            0%, 80%, 100% { transform: scale(0.8); opacity: 0.5; }
+            40% { transform: scale(1); opacity: 1; }
+        }
+
+        /* Form Styles */
+        .form-group {
+            margin: 12px 0;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 13px;
+            color: var(--text-dim);
+            margin-bottom: 6px;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 12px;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--text);
+            font-size: 14px;
+            outline: none;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            border-color: var(--accent);
+        }
+
+        .form-submit {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, var(--accent) 0%, var(--accent-light) 100%);
+            border: none;
+            border-radius: 8px;
+            color: #fff;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 12px;
+            transition: transform 0.2s;
+        }
+
+        .form-submit:hover {
+            transform: scale(1.02);
+        }
+
+        /* Success Message */
+        .success-card {
+            background: var(--card);
+            border-radius: 16px;
+            padding: 24px;
+            text-align: center;
+            border: 1px solid var(--border);
+        }
+
+        .success-icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #4ade80 0%, #22c55e 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 16px;
+            font-size: 28px;
+        }
+
+        .success-card h3 {
+            color: #4ade80;
+            margin-bottom: 8px;
+        }
+
+        .success-card p {
+            color: var(--text-dim);
+            font-size: 14px;
+        }
+
+        /* Service Tags */
+        .service-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin: 12px 0;
+        }
+
+        .service-tag {
+            background: rgba(233, 69, 96, 0.1);
+            border: 1px solid var(--border);
+            padding: 8px 12px;
+            border-radius: 8px;
+            font-size: 13px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .service-tag:hover,
+        .service-tag.selected {
+            background: var(--accent);
+            border-color: var(--accent);
+            color: #fff;
+        }
+
+        /* Hidden */
+        .hidden {
+            display: none !important;
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <h1>✨ 星艺造型</h1>
+        <p>轻奢美发 · 华润万象汇3楼</p>
+    </header>
+
+    <div class="chat-container" id="chatContainer">
+        <!-- Messages will be added here -->
+    </div>
+
+    <div class="input-area">
+        <div class="input-wrapper">
+            <input type="text" id="userInput" placeholder="输入您的需求..." autocomplete="off">
+            <button class="send-btn" onclick="sendMessage()">
+                <svg viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // ==================== 配置区 ====================
+        const CONFIG = {
+            shopName: '星艺造型',
+            shopTel: '0532-88669977',
+            shopAddress: '华润万象汇3楼308',
+            shopHours: '10:00-22:00',
+            // 邮箱通知配置（需要替换成你的邮箱）
+            notifyEmail: '',
+            // 预约数据存储URL（留空则只用本地存储）
+            storageUrl: ''
+        };
+
+        // ==================== 知识库 ====================
+        const KNOWLEDGE = {
+            services: {
+                '洗剪吹': { price: '58-168元', desc: '根据理发师等级定价' },
+                '染发': { price: '198-598元', desc: '短发/中长发不同价位' },
+                '烫发': { price: '298-798元', desc: '纹理烫、摩根烫、法式卷等' },
+                '头皮护理': { price: '128-298元', desc: '清洁、控油、滋养' },
+                '蛋白矫正': { price: '398-898元', desc: '沙发/自然卷克星' },
+                '接发': { price: '1280元起', desc: '羽毛接发，接口自然' }
+            },
+            staff: [
+                { name: '林辰', title: '技术总监', exp: '12年', special: '高级定制烫染、法式慵懒卷、明星同款' },
+                { name: '苏晚', title: '资深理发师', exp: '8年', special: '生活化烫染、锁骨发、空气刘海' },
+                { name: '陈默', title: '资深理发师', exp: '7年', special: '男士油头、摩根烫、纹理烫' },
+                { name: '夏禾', title: '理发师', exp: '4年', special: '基础剪发、儿童剪发' },
+                { name: '周宇', title: '理发师', exp: '5年', special: '潮色染发、羊毛卷、接发' }
+            ],
+            workflow: {
+                greeting: '您好！欢迎来到星艺造型～ ✨\n\n我是您的专属发型顾问，请问今天想做什么服务呢？',
+                serviceAsk: '我们提供以下服务，您可以告诉我感兴趣的：\n\n• 洗剪吹\n• 染发\n• 烫发\n• 头皮护理\n• 蛋白矫正\n• 接发',
+                priceGuide: '我们的价格表：\n\n【洗剪吹】\n• 基础款 58元\n• 资深款 98元\n• 总监款 168元\n\n【染发/烫发】\n• 基础款 198-298元\n• 资深款 298-528元\n• 总监款 498-798元\n\n需要了解具体某项吗？',
+                staffRecommend: '我们的理发师团队：\n\n【技术总监】\n• 林辰 - 12年经验，擅长高级定制烫染\n\n【资深理发师】\n• 苏晚 - 8年，主打生活化发型\n• 陈默 - 7年，男士发型专家\n\n【理发师】\n• 夏禾 - 4年，儿童剪发专家\n• 周宇 - 5年，潮色染发达人',
+                appointmentAsk: '好的，我来帮您预约！\n\n请填写以下信息：',
+                appointmentConfirm: '📋 预约信息确认\n\n姓名：{name}\n电话：{phone}\n服务：{service}\n理发师：{stylist}\n时间：{date} {time}\n\n确认无误请回复"确认预约"，如有修改请告诉我～',
+                appointmentSuccess: '✅ 预约成功！\n\n📍 地址：华润万象汇3楼308\n📞 电话：0532-88669977\n⏰ 时间：{date} {time}\n💇 理发师：{stylist}\n\n请按时到店，到店前无需洗头。如需修改或取消，请提前2小时联系我们～'
+            },
+            keywords: {
+                '价格': ['price', '多少钱', '收费', '贵不贵', '价位'],
+                '预约': ['预约', '订位', '约', '什么时候', '能来'],
+                '服务': ['服务', '项目', '做什么', '有哪些'],
+                '理发师': ['理发师', '发型师', '谁', '指定'],
+                '地址': ['地址', '在哪', '怎么走', '位置', '地铁'],
+                '时间': ['营业', '几点', '开门', '关门', '营业时间'],
+                '优惠': ['优惠', '折扣', '会员', '便宜', '活动']
+            }
+        };
+
+        // ==================== 状态管理 ====================
+        let state = {
+            step: 'greeting', // greeting -> service -> staff -> appointment -> confirm -> success
+            selectedService: '',
+            selectedStaff: '',
+            appointmentData: {}
+        };
+
+        // ==================== 对话逻辑 ====================
+        function processMessage(userMsg) {
+            const msg = userMsg.toLowerCase().trim();
+
+            // 关键词匹配
+            for (const [intent, keywords] of Object.entries(KNOWLEDGE.keywords)) {
+                if (keywords.some(k => msg.includes(k))) {
+                    return handleIntent(intent);
+                }
+            }
+
+            // 流程处理
+            switch (state.step) {
+                case 'greeting':
+                    if (msg.includes('预约') || msg.includes('想') || msg.includes('做')) {
+                        state.step = 'service';
+                        return KNOWLEDGE.workflow.serviceAsk;
+                    }
+                    return KNOWLEDGE.workflow.serviceAsk;
+
+                case 'service':
+                    for (const service of Object.keys(KNOWLEDGE.services)) {
+                        if (msg.includes(service)) {
+                            state.selectedService = service;
+                            state.step = 'staff';
+                            return `您选择了【${service}】，价格：${KNOWLEDGE.services[service].price}\n\n${KNOWLEDGE.workflow.staffRecommend}\n\n请问您想指定哪位理发师呢？`;
+                        }
+                    }
+                    // 默认选择第一个提到的服务
+                    for (const service of Object.keys(KNOWLEDGE.services)) {
+                        if (msg.length > 2) {
+                            state.selectedService = service;
+                            state.step = 'staff';
+                            return `好的，为您推荐【${service}】，价格：${KNOWLEDGE.services[service].price}\n\n${KNOWLEDGE.workflow.staffRecommend}\n\n请问您想指定哪位理发师呢？`;
+                        }
+                    }
+                    return '抱歉，我没理解您的需求。请问您想做洗剪吹、染发还是烫发呢？';
+
+                case 'staff':
+                    for (const s of KNOWLEDGE.staff) {
+                        if (msg.includes(s.name)) {
+                            state.selectedStaff = s.name;
+                            state.step = 'appointment';
+                            return `${s.name}（${s.title}，${s.exp}经验）擅长：${s.special}\n\n${KNOWLEDGE.workflow.appointmentAsk}\n\n<form id="appointmentForm">
+<div class="form-group"><label>您的姓名</label><input type="text" id="formName" placeholder="请输入姓名" required></div>
+<div class="form-group"><label>联系电话</label><input type="tel" id="formPhone" placeholder="请输入手机号" required></div>
+<div class="form-group"><label>预约日期</label><input type="date" id="formDate" required></div>
+<div class="form-group"><label>预约时间</label><select id="formTime"><option value="10:00">10:00</option><option value="11:00">11:00</option><option value="12:00">12:00</option><option value="13:00">13:00</option><option value="14:00">14:00</option><option value="15:00">15:00</option><option value="16:00">16:00</option><option value="17:00">17:00</option><option value="18:00">18:00</option><option value="19:00">19:00</option><option value="20:00">20:00</option></select></div>
+<button type="button" class="form-submit" onclick="submitAppointment()">确认预约信息</button>
+</form>`;
+                        }
+                    }
+                    return '请问您想选择哪位理发师？\n\n• 林辰（技术总监）- 高级定制\n• 苏晚 - 生活化发型\n• 陈默 - 男士专家\n• 夏禾 - 儿童剪发\n• 周宇 - 潮色达人';
+
+                default:
+                    return KNOWLEDGE.workflow.serviceAsk;
+            }
+        }
+
+        function handleIntent(intent) {
+            switch (intent) {
+                case '价格':
+                    return KNOWLEDGE.workflow.priceGuide;
+                case '服务':
+                    return KNOWLEDGE.workflow.serviceAsk;
+                case '理发师':
+                    return KNOWLEDGE.workflow.staffRecommend;
+                case '地址':
+                    return `📍 我们的地址：\n华润万象汇3楼308\n\n🚇 地铁：2号线五四广场站C口出，步行50米\n\n🅿️ 停车：万象汇地下停车场\n\n📞 电话：${CONFIG.shopTel}`;
+                case '时间':
+                    return `⏰ 营业时间：${CONFIG.shopHours}\n周一至周日，全年无休～`;
+                case '优惠':
+                    return `🎁 会员优惠：\n• 储值1000元享8.5折\n• 储值2000元享7.8折\n• 储值5000元享6.8折\n\n🎉 限时活动：\n• 周一至周五10:00-14:00，洗剪吹（资深款）仅需78元\n• 老带新：新顾客首次烫染立减100元`;
+                default:
+                    return KNOWLEDGE.workflow.serviceAsk;
+            }
+        }
+
+        // ==================== UI 操作 ====================
+        function addMessage(content, isUser = false) {
+            const container = document.getElementById('chatContainer');
+            const msgDiv = document.createElement('div');
+            msgDiv.className = `message ${isUser ? 'user' : 'ai'}`;
+
+            const avatar = document.createElement('div');
+            avatar.className = 'message-avatar';
+            avatar.textContent = isUser ? '👤' : '✨';
+
+            const contentDiv = document.createElement('div');
+            contentDiv.className = 'message-content';
+
+            // 处理HTML内容
+            if (content.includes('<form')) {
+                contentDiv.innerHTML = content;
+                // 格式化日期为今天+1
+                setTimeout(() => {
+                    const dateInput = document.getElementById('formDate');
+                    if (dateInput) {
+                        const tomorrow = new Date();
+                        tomorrow.setDate(tomorrow.getDate() + 1);
+                        dateInput.value = tomorrow.toISOString().split('T')[0];
+                        dateInput.min = tomorrow.toISOString().split('T')[0];
+                    }
+                }, 100);
+            } else {
+                contentDiv.innerHTML = content.replace(/\n/g, '<br>');
+            }
+
+            msgDiv.appendChild(avatar);
+            msgDiv.appendChild(contentDiv);
+            container.appendChild(msgDiv);
+            container.scrollTop = container.scrollHeight;
+        }
+
+        function showTyping() {
+            const container = document.getElementById('chatContainer');
+            const typingDiv = document.createElement('div');
+            typingDiv.className = 'message ai';
+            typingDiv.id = 'typingIndicator';
+            typingDiv.innerHTML = `
+                <div class="message-avatar">✨</div>
+                <div class="typing">
+                    <span></span><span></span><span></span>
+                </div>
+            `;
+            container.appendChild(typingDiv);
+            container.scrollTop = container.scrollHeight;
+        }
+
+        function hideTyping() {
+            const typing = document.getElementById('typingIndicator');
+            if (typing) typing.remove();
+        }
+
+        function sendMessage() {
+            const input = document.getElementById('userInput');
+            const msg = input.value.trim();
+            if (!msg) return;
+
+            addMessage(msg, true);
+            input.value = '';
+
+            showTyping();
+
+            setTimeout(() => {
+                hideTyping();
+                const response = processMessage(msg);
+                addMessage(response);
+            }, 800 + Math.random() * 500);
+        }
+
+        function submitAppointment() {
+            const name = document.getElementById('formName')?.value;
+            const phone = document.getElementById('formPhone')?.value;
+            const date = document.getElementById('formDate')?.value;
+            const time = document.getElementById('formTime')?.value;
+
+            if (!name || !phone || !date || !time) {
+                alert('请填写完整信息');
+                return;
+            }
+
+            // 保存预约数据
+            const appointment = {
+                name,
+                phone,
+                service: state.selectedService,
+                stylist: state.selectedStaff,
+                date,
+                time,
+                createdAt: new Date().toISOString()
+            };
+
+            saveAppointment(appointment);
+
+            state.step = 'success';
+            addMessage(KNOWLEDGE.workflow.appointmentSuccess
+                .replace('{date}', date)
+                .replace('{time}', time)
+                .replace('{stylist}', state.selectedStaff));
+        }
+
+        function saveAppointment(data) {
+            // 本地存储
+            const appointments = JSON.parse(localStorage.getItem('xingyi_appointments') || '[]');
+            appointments.push(data);
+            localStorage.setItem('xingyi_appointments', JSON.stringify(appointments));
+
+            // 发送到服务器（如果有配置）
+            if (CONFIG.storageUrl) {
+                fetch(CONFIG.storageUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data)
+                }).catch(console.error);
+            }
+
+            // 发送邮件通知（如果有配置）
+            if (CONFIG.notifyEmail) {
+                sendEmailNotification(data);
+            }
+
+            console.log('预约已保存:', data);
+        }
+
+        function sendEmailNotification(data) {
+            const subject = encodeURIComponent(`【星艺造型】新预约：${data.name} - ${data.service}`);
+            const body = encodeURIComponent(`
+新预约信息：
+
+姓名：${data.name}
+电话：${data.phone}
+服务：${data.service}
+理发师：${data.stylist}
+日期：${data.date}
+时间：${data.time}
+
+请及时确认～
+            `);
+            window.open(`mailto:${CONFIG.notifyEmail}?subject=${subject}&body=${body}`);
+        }
+
+        // 回车发送
+        document.getElementById('userInput').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') sendMessage();
+        });
+
+        // 初始化
+        window.onload = () => {
+            addMessage(KNOWLEDGE.workflow.greeting);
+        };
+    </script>
+</body>
+</html>
