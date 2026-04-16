@@ -20,6 +20,8 @@
             --text: #eaeaea;
             --text-dim: #8892b0;
             --border: rgba(233, 69, 96, 0.2);
+            --success: #10b981;
+            --warning: #f59e0b;
         }
 
         body {
@@ -55,6 +57,43 @@
             font-size: 12px;
             color: var(--text-dim);
             margin-top: 4px;
+        }
+
+        /* Token Setup */
+        .token-setup {
+            background: var(--card);
+            border-radius: 16px;
+            padding: 20px;
+            margin: 20px;
+        }
+
+        .token-setup h3 {
+            font-size: 16px;
+            margin-bottom: 12px;
+            color: var(--accent-light);
+        }
+
+        .token-setup input {
+            width: 100%;
+            padding: 12px;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            background: var(--bg);
+            color: var(--text);
+            font-size: 14px;
+            margin-bottom: 12px;
+        }
+
+        .token-setup button {
+            width: 100%;
+            padding: 12px;
+            border-radius: 8px;
+            border: none;
+            background: linear-gradient(135deg, var(--accent) 0%, var(--accent-light) 100%);
+            color: white;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
         }
 
         /* Chat Container */
@@ -98,165 +137,111 @@
 
         .message.ai .message-avatar {
             background: linear-gradient(135deg, var(--accent) 0%, var(--accent-light) 100%);
-            margin-right: 10px;
         }
 
         .message.user .message-avatar {
-            background: var(--card);
-            margin-left: 10px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
         }
 
         .message-content {
             max-width: 75%;
             padding: 12px 16px;
             border-radius: 16px;
-            font-size: 15px;
             line-height: 1.5;
+            font-size: 15px;
         }
 
         .message.ai .message-content {
             background: var(--card);
+            border: 1px solid var(--border);
             border-bottom-left-radius: 4px;
+            margin-left: 10px;
         }
 
         .message.user .message-content {
             background: linear-gradient(135deg, var(--accent) 0%, var(--accent-light) 100%);
-            color: #fff;
+            color: white;
             border-bottom-right-radius: 4px;
+            margin-right: 10px;
         }
 
-        .message-content p {
-            margin-bottom: 8px;
+        /* Service Buttons */
+        .service-buttons {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            margin-top: 12px;
         }
 
-        .message-content p:last-child {
-            margin-bottom: 0;
+        .service-btn {
+            padding: 14px 16px;
+            border-radius: 12px;
+            border: 1px solid var(--border);
+            background: var(--bg);
+            color: var(--text);
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: left;
         }
 
-        .message-content ul {
-            margin: 8px 0;
-            padding-left: 20px;
+        .service-btn:hover {
+            border-color: var(--accent);
+            background: rgba(233, 69, 96, 0.1);
+            transform: translateY(-2px);
         }
 
-        .message-content li {
-            margin: 4px 0;
-        }
-
-        .message-content strong {
+        .service-btn .name {
+            font-weight: 600;
             color: var(--accent-light);
         }
 
-        /* Quick Actions */
-        .quick-actions {
+        .service-btn .price {
+            font-size: 12px;
+            color: var(--text-dim);
+            margin-top: 4px;
+        }
+
+        /* Staff Buttons */
+        .staff-buttons {
             display: flex;
-            flex-wrap: wrap;
+            flex-direction: column;
             gap: 8px;
             margin-top: 12px;
         }
 
-        .quick-btn {
-            background: rgba(233, 69, 96, 0.15);
-            border: 1px solid var(--border);
-            color: var(--accent-light);
-            padding: 8px 14px;
-            border-radius: 20px;
-            font-size: 13px;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-
-        .quick-btn:hover {
-            background: var(--accent);
-            color: #fff;
-        }
-
-        /* Input Area */
-        .input-area {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            background: linear-gradient(to top, var(--bg) 80%, transparent);
-            padding: 20px;
-            padding-top: 40px;
-        }
-
-        .input-wrapper {
-            display: flex;
-            background: var(--card);
-            border-radius: 24px;
-            padding: 4px;
-            border: 1px solid var(--border);
-        }
-
-        .input-wrapper input {
-            flex: 1;
-            background: transparent;
-            border: none;
+        .staff-btn {
             padding: 12px 16px;
-            font-size: 15px;
+            border-radius: 10px;
+            border: 1px solid var(--border);
+            background: var(--bg);
             color: var(--text);
-            outline: none;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: left;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
 
-        .input-wrapper input::placeholder {
+        .staff-btn:hover {
+            border-color: var(--accent);
+            background: rgba(233, 69, 96, 0.1);
+        }
+
+        .staff-btn .title {
+            font-size: 12px;
             color: var(--text-dim);
         }
 
-        .send-btn {
-            width: 44px;
-            height: 44px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, var(--accent) 0%, var(--accent-light) 100%);
-            border: none;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: transform 0.2s;
-        }
-
-        .send-btn:hover {
-            transform: scale(1.05);
-        }
-
-        .send-btn svg {
-            width: 20px;
-            height: 20px;
-            fill: #fff;
-        }
-
-        /* Typing Indicator */
-        .typing {
-            display: flex;
-            align-items: center;
-            gap: 4px;
-            padding: 12px 16px;
-            background: var(--card);
-            border-radius: 16px;
-            width: fit-content;
-        }
-
-        .typing span {
-            width: 8px;
-            height: 8px;
-            background: var(--text-dim);
-            border-radius: 50%;
-            animation: bounce 1.4s infinite ease-in-out;
-        }
-
-        .typing span:nth-child(1) { animation-delay: 0s; }
-        .typing span:nth-child(2) { animation-delay: 0.2s; }
-        .typing span:nth-child(3) { animation-delay: 0.4s; }
-
-        @keyframes bounce {
-            0%, 80%, 100% { transform: scale(0.8); opacity: 0.5; }
-            40% { transform: scale(1); opacity: 1; }
-        }
-
         /* Form Styles */
+        .appointment-form {
+            margin-top: 12px;
+        }
+
         .form-group {
-            margin: 12px 0;
+            margin-bottom: 12px;
         }
 
         .form-group label {
@@ -270,328 +255,430 @@
         .form-group select {
             width: 100%;
             padding: 12px;
-            background: rgba(255,255,255,0.05);
-            border: 1px solid var(--border);
             border-radius: 8px;
+            border: 1px solid var(--border);
+            background: var(--bg);
             color: var(--text);
             font-size: 14px;
-            outline: none;
-        }
-
-        .form-group input:focus,
-        .form-group select:focus {
-            border-color: var(--accent);
         }
 
         .form-submit {
             width: 100%;
             padding: 14px;
-            background: linear-gradient(135deg, var(--accent) 0%, var(--accent-light) 100%);
+            border-radius: 10px;
             border: none;
-            border-radius: 8px;
-            color: #fff;
+            background: linear-gradient(135deg, var(--success) 0%, #34d399 100%);
+            color: white;
             font-size: 15px;
             font-weight: 600;
             cursor: pointer;
-            margin-top: 12px;
-            transition: transform 0.2s;
+            margin-top: 8px;
         }
 
         .form-submit:hover {
-            transform: scale(1.02);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 20px rgba(16, 185, 129, 0.4);
         }
 
         /* Success Message */
-        .success-card {
-            background: var(--card);
+        .success-box {
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.1) 0%, rgba(52, 211, 153, 0.1) 100%);
+            border: 1px solid var(--success);
             border-radius: 16px;
             padding: 24px;
             text-align: center;
-            border: 1px solid var(--border);
         }
 
-        .success-icon {
-            width: 60px;
-            height: 60px;
-            background: linear-gradient(135deg, #4ade80 0%, #22c55e 100%);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 0 auto 16px;
-            font-size: 28px;
+        .success-box .icon {
+            font-size: 48px;
+            margin-bottom: 12px;
         }
 
-        .success-card h3 {
-            color: #4ade80;
+        .success-box h3 {
+            color: var(--success);
             margin-bottom: 8px;
         }
 
-        .success-card p {
-            color: var(--text-dim);
-            font-size: 14px;
-        }
-
-        /* Service Tags */
-        .service-tags {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
-            margin: 12px 0;
-        }
-
-        .service-tag {
-            background: rgba(233, 69, 96, 0.1);
-            border: 1px solid var(--border);
-            padding: 8px 12px;
-            border-radius: 8px;
+        .success-box .detail {
             font-size: 13px;
-            cursor: pointer;
-            transition: all 0.2s;
+            color: var(--text-dim);
+            line-height: 1.6;
         }
 
-        .service-tag:hover,
-        .service-tag.selected {
-            background: var(--accent);
+        /* Input Area */
+        .input-area {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(to top, var(--bg) 80%, transparent);
+            padding: 20px;
+        }
+
+        .input-wrapper {
+            display: flex;
+            gap: 10px;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .input-wrapper input {
+            flex: 1;
+            padding: 14px 18px;
+            border-radius: 25px;
+            border: 1px solid var(--border);
+            background: var(--card);
+            color: var(--text);
+            font-size: 15px;
+            outline: none;
+        }
+
+        .input-wrapper input:focus {
             border-color: var(--accent);
-            color: #fff;
         }
 
-        /* Hidden */
-        .hidden {
-            display: none !important;
+        .input-wrapper button {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            border: none;
+            background: linear-gradient(135deg, var(--accent) 0%, var(--accent-light) 100%);
+            color: white;
+            font-size: 18px;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        .input-wrapper button:hover {
+            transform: scale(1.1);
+        }
+
+        /* Status Badge */
+        .sync-status {
+            position: fixed;
+            top: 80px;
+            right: 16px;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            z-index: 50;
+        }
+
+        .sync-status.connected {
+            background: rgba(16, 185, 129, 0.2);
+            color: var(--success);
+        }
+
+        .sync-status.disconnected {
+            background: rgba(245, 158, 11, 0.2);
+            color: var(--warning);
+        }
+
+        .sync-status .dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: currentColor;
         }
     </style>
 </head>
 <body>
-    <header class="header">
+    <div class="header">
         <h1>✨ 星艺造型</h1>
-        <p>轻奢美发 · 华润万象汇3楼</p>
-    </header>
+        <p>轻奢店 · 预约服务</p>
+    </div>
+
+    <div id="syncStatus" class="sync-status disconnected">
+        <span class="dot"></span>
+        <span>未连接</span>
+    </div>
+
+    <div id="tokenSetup" class="token-setup" style="display: none;">
+        <h3>🔗 首次使用需要授权</h3>
+        <input type="password" id="githubToken" placeholder="粘贴你的GitHub Token">
+        <button onclick="saveToken()">确认授权</button>
+        <p style="font-size: 12px; color: var(--text-dim); margin-top: 8px;">
+            Token用于同步预约数据到后台，仅限店主使用
+        </p>
+    </div>
 
     <div class="chat-container" id="chatContainer">
-        <!-- Messages will be added here -->
+        <!-- Messages will be inserted here -->
     </div>
 
     <div class="input-area">
         <div class="input-wrapper">
-            <input type="text" id="userInput" placeholder="输入您的需求..." autocomplete="off">
-            <button class="send-btn" onclick="sendMessage()">
-                <svg viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
-            </button>
+            <input type="text" id="userInput" placeholder="输入您想说的话..." autocomplete="off">
+            <button onclick="sendMessage()">➤</button>
         </div>
     </div>
 
     <script>
-        // ==================== 配置区 ====================
+        // 配置
         const CONFIG = {
-            shopName: '星艺造型',
-            shopTel: '0532-88669977',
-            shopAddress: '华润万象汇3楼308',
-            shopHours: '10:00-22:00',
-            // 邮箱通知配置（需要替换成你的邮箱）
-            notifyEmail: '',
-            // 预约数据存储URL（留空则只用本地存储）
-            storageUrl: ''
+            repo: 'git5002-xb/xingyi-chat',  // 存储预约数据的仓库
+            label: 'appointment'  // Issue标签
         };
 
-        // ==================== 知识库 ====================
+        // 状态管理
+        let state = {
+            step: 'greeting',
+            selectedService: null,
+            selectedStaff: null,
+            token: localStorage.getItem('xingyi_github_token') || ''
+        };
+
+        // 知识库
         const KNOWLEDGE = {
+            shop: {
+                name: '星艺造型',
+                address: '青岛市南区万象汇3楼308',
+                phone: '0532-88888888',
+                hours: '10:00-21:00'
+            },
             services: {
-                '洗剪吹': { price: '58-168元', desc: '根据理发师等级定价' },
-                '染发': { price: '198-598元', desc: '短发/中长发不同价位' },
-                '烫发': { price: '298-798元', desc: '纹理烫、摩根烫、法式卷等' },
-                '头皮护理': { price: '128-298元', desc: '清洁、控油、滋养' },
-                '蛋白矫正': { price: '398-898元', desc: '沙发/自然卷克星' },
-                '接发': { price: '1280元起', desc: '羽毛接发，接口自然' }
+                '洗剪吹': { price: '68元', desc: '基础造型' },
+                '洗剪吹+造型': { price: '98元', desc: '含吹风造型' },
+                '染发': { price: '288元起', desc: '进口染膏' },
+                '烫发': { price: '388元起', desc: '冷烫/热烫可选' },
+                '头皮护理': { price: '168元', desc: '深层清洁护理' }
             },
             staff: [
-                { name: '林辰', title: '技术总监', exp: '12年', special: '高级定制烫染、法式慵懒卷、明星同款' },
-                { name: '苏晚', title: '资深理发师', exp: '8年', special: '生活化烫染、锁骨发、空气刘海' },
-                { name: '陈默', title: '资深理发师', exp: '7年', special: '男士油头、摩根烫、纹理烫' },
-                { name: '夏禾', title: '理发师', exp: '4年', special: '基础剪发、儿童剪发' },
-                { name: '周宇', title: '理发师', exp: '5年', special: '潮色染发、羊毛卷、接发' }
+                { name: '林辰', title: '技术总监', exp: '8年', special: '高级定制、明星造型' },
+                { name: '苏晚', title: '资深发型师', exp: '5年', special: '自然生活风、韩式造型' },
+                { name: '陈默', title: '男士专家', exp: '6年', special: '男士理发、渐变雕刻' },
+                { name: '夏禾', title: '儿童造型师', exp: '4年', special: '儿童可爱发型' },
+                { name: '周宇', title: '色彩导师', exp: '7年', special: '创意染发、渐变挑染' }
             ],
             workflow: {
-                greeting: '您好！欢迎来到星艺造型～ ✨\n\n我是您的专属发型顾问，请问今天想做什么服务呢？',
-                serviceAsk: '我们提供以下服务，您可以告诉我感兴趣的：\n\n• 洗剪吹\n• 染发\n• 烫发\n• 头皮护理\n• 蛋白矫正\n• 接发',
-                priceGuide: '我们的价格表：\n\n【洗剪吹】\n• 基础款 58元\n• 资深款 98元\n• 总监款 168元\n\n【染发/烫发】\n• 基础款 198-298元\n• 资深款 298-528元\n• 总监款 498-798元\n\n需要了解具体某项吗？',
-                staffRecommend: '我们的理发师团队：\n\n【技术总监】\n• 林辰 - 12年经验，擅长高级定制烫染\n\n【资深理发师】\n• 苏晚 - 8年，主打生活化发型\n• 陈默 - 7年，男士发型专家\n\n【理发师】\n• 夏禾 - 4年，儿童剪发专家\n• 周宇 - 5年，潮色染发达人',
-                appointmentAsk: '好的，我来帮您预约！\n\n请填写以下信息：',
-                appointmentConfirm: '📋 预约信息确认\n\n姓名：{name}\n电话：{phone}\n服务：{service}\n理发师：{stylist}\n时间：{date} {time}\n\n确认无误请回复"确认预约"，如有修改请告诉我～',
-                appointmentSuccess: '✅ 预约成功！\n\n📍 地址：华润万象汇3楼308\n📞 电话：0532-88669977\n⏰ 时间：{date} {time}\n💇 理发师：{stylist}\n\n请按时到店，到店前无需洗头。如需修改或取消，请提前2小时联系我们～'
-            },
-            keywords: {
-                '价格': ['price', '多少钱', '收费', '贵不贵', '价位'],
-                '预约': ['预约', '订位', '约', '什么时候', '能来'],
-                '服务': ['服务', '项目', '做什么', '有哪些'],
-                '理发师': ['理发师', '发型师', '谁', '指定'],
-                '地址': ['地址', '在哪', '怎么走', '位置', '地铁'],
-                '时间': ['营业', '几点', '开门', '关门', '营业时间'],
-                '优惠': ['优惠', '折扣', '会员', '便宜', '活动']
+                greeting: '👋 您好，欢迎来到星艺造型！\n\n我是您的专属客服小艺，请问今天想做什么服务呢？',
+                serviceAsk: '请告诉我您想做的服务：\n\n• 洗剪吹 68元\n• 洗剪吹+造型 98元\n• 染发 288元起\n• 烫发 388元起\n• 头皮护理 168元',
+                staffRecommend: '我们的理发师团队：',
+                appointmentAsk: '请填写您的预约信息：',
+                appointmentSuccess: '🎉 预约成功！\n\n我们已收到您的预约，稍后会有工作人员电话确认。\n\n📍 到店地址：青岛市南区万象汇3楼308\n📞 有问题可致电：0532-88888888\n\n期待为您服务！'
             }
         };
 
-        // ==================== 状态管理 ====================
-        let state = {
-            step: 'greeting', // greeting -> service -> staff -> appointment -> confirm -> success
-            selectedService: '',
-            selectedStaff: '',
-            appointmentData: {}
-        };
-
-        // ==================== 对话逻辑 ====================
-        function processMessage(userMsg) {
-            const msg = userMsg.toLowerCase().trim();
-
-            // 关键词匹配
-            for (const [intent, keywords] of Object.entries(KNOWLEDGE.keywords)) {
-                if (keywords.some(k => msg.includes(k))) {
-                    return handleIntent(intent);
-                }
-            }
-
-            // 流程处理
-            switch (state.step) {
-                case 'greeting':
-                    if (msg.includes('预约') || msg.includes('想') || msg.includes('做')) {
-                        state.step = 'service';
-                        return KNOWLEDGE.workflow.serviceAsk;
-                    }
-                    return KNOWLEDGE.workflow.serviceAsk;
-
-                case 'service':
-                    for (const service of Object.keys(KNOWLEDGE.services)) {
-                        if (msg.includes(service)) {
-                            state.selectedService = service;
-                            state.step = 'staff';
-                            return `您选择了【${service}】，价格：${KNOWLEDGE.services[service].price}\n\n${KNOWLEDGE.workflow.staffRecommend}\n\n请问您想指定哪位理发师呢？`;
-                        }
-                    }
-                    // 默认选择第一个提到的服务
-                    for (const service of Object.keys(KNOWLEDGE.services)) {
-                        if (msg.length > 2) {
-                            state.selectedService = service;
-                            state.step = 'staff';
-                            return `好的，为您推荐【${service}】，价格：${KNOWLEDGE.services[service].price}\n\n${KNOWLEDGE.workflow.staffRecommend}\n\n请问您想指定哪位理发师呢？`;
-                        }
-                    }
-                    return '抱歉，我没理解您的需求。请问您想做洗剪吹、染发还是烫发呢？';
-
-                case 'staff':
-                    for (const s of KNOWLEDGE.staff) {
-                        if (msg.includes(s.name)) {
-                            state.selectedStaff = s.name;
-                            state.step = 'appointment';
-                            return `${s.name}（${s.title}，${s.exp}经验）擅长：${s.special}\n\n${KNOWLEDGE.workflow.appointmentAsk}\n\n<form id="appointmentForm">
-<div class="form-group"><label>您的姓名</label><input type="text" id="formName" placeholder="请输入姓名" required></div>
-<div class="form-group"><label>联系电话</label><input type="tel" id="formPhone" placeholder="请输入手机号" required></div>
-<div class="form-group"><label>预约日期</label><input type="date" id="formDate" required></div>
-<div class="form-group"><label>预约时间</label><select id="formTime"><option value="10:00">10:00</option><option value="11:00">11:00</option><option value="12:00">12:00</option><option value="13:00">13:00</option><option value="14:00">14:00</option><option value="15:00">15:00</option><option value="16:00">16:00</option><option value="17:00">17:00</option><option value="18:00">18:00</option><option value="19:00">19:00</option><option value="20:00">20:00</option></select></div>
-<button type="button" class="form-submit" onclick="submitAppointment()">确认预约信息</button>
-</form>`;
-                        }
-                    }
-                    return '请问您想选择哪位理发师？\n\n• 林辰（技术总监）- 高级定制\n• 苏晚 - 生活化发型\n• 陈默 - 男士专家\n• 夏禾 - 儿童剪发\n• 周宇 - 潮色达人';
-
-                default:
-                    return KNOWLEDGE.workflow.serviceAsk;
-            }
+        // 初始化
+        function init() {
+            checkToken();
+            addMessage(KNOWLEDGE.workflow.greeting, 'ai');
         }
 
-        function handleIntent(intent) {
-            switch (intent) {
-                case '价格':
-                    return KNOWLEDGE.workflow.priceGuide;
-                case '服务':
-                    return KNOWLEDGE.workflow.serviceAsk;
-                case '理发师':
-                    return KNOWLEDGE.workflow.staffRecommend;
-                case '地址':
-                    return `📍 我们的地址：\n华润万象汇3楼308\n\n🚇 地铁：2号线五四广场站C口出，步行50米\n\n🅿️ 停车：万象汇地下停车场\n\n📞 电话：${CONFIG.shopTel}`;
-                case '时间':
-                    return `⏰ 营业时间：${CONFIG.shopHours}\n周一至周日，全年无休～`;
-                case '优惠':
-                    return `🎁 会员优惠：\n• 储值1000元享8.5折\n• 储值2000元享7.8折\n• 储值5000元享6.8折\n\n🎉 限时活动：\n• 周一至周五10:00-14:00，洗剪吹（资深款）仅需78元\n• 老带新：新顾客首次烫染立减100元`;
-                default:
-                    return KNOWLEDGE.workflow.serviceAsk;
-            }
-        }
-
-        // ==================== UI 操作 ====================
-        function addMessage(content, isUser = false) {
-            const container = document.getElementById('chatContainer');
-            const msgDiv = document.createElement('div');
-            msgDiv.className = `message ${isUser ? 'user' : 'ai'}`;
-
-            const avatar = document.createElement('div');
-            avatar.className = 'message-avatar';
-            avatar.textContent = isUser ? '👤' : '✨';
-
-            const contentDiv = document.createElement('div');
-            contentDiv.className = 'message-content';
-
-            // 处理HTML内容
-            if (content.includes('<form')) {
-                contentDiv.innerHTML = content;
-                // 格式化日期为今天+1
-                setTimeout(() => {
-                    const dateInput = document.getElementById('formDate');
-                    if (dateInput) {
-                        const tomorrow = new Date();
-                        tomorrow.setDate(tomorrow.getDate() + 1);
-                        dateInput.value = tomorrow.toISOString().split('T')[0];
-                        dateInput.min = tomorrow.toISOString().split('T')[0];
-                    }
-                }, 100);
+        // 检查Token
+        function checkToken() {
+            if (!state.token) {
+                document.getElementById('tokenSetup').style.display = 'block';
             } else {
-                contentDiv.innerHTML = content.replace(/\n/g, '<br>');
+                updateSyncStatus(true);
             }
+        }
 
-            msgDiv.appendChild(avatar);
-            msgDiv.appendChild(contentDiv);
-            container.appendChild(msgDiv);
+        // 保存Token
+        function saveToken() {
+            const token = document.getElementById('githubToken').value.trim();
+            if (!token) {
+                alert('请输入Token');
+                return;
+            }
+            state.token = token;
+            localStorage.setItem('xingyi_github_token', token);
+            document.getElementById('tokenSetup').style.display = 'none';
+            updateSyncStatus(true);
+            addMessage('✅ 已连接后台，数据将自动同步', 'ai');
+        }
+
+        // 更新同步状态
+        function updateSyncStatus(connected) {
+            const el = document.getElementById('syncStatus');
+            if (connected) {
+                el.className = 'sync-status connected';
+                el.innerHTML = '<span class="dot"></span><span>已同步</span>';
+            } else {
+                el.className = 'sync-status disconnected';
+                el.innerHTML = '<span class="dot"></span><span>未连接</span>';
+            }
+        }
+
+        // 添加消息
+        function addMessage(content, type) {
+            const container = document.getElementById('chatContainer');
+            const msg = document.createElement('div');
+            msg.className = `message ${type}`;
+            msg.innerHTML = `
+                <div class="message-avatar">${type === 'ai' ? '💇' : '👤'}</div>
+                <div class="message-content">${content.replace(/\n/g, '<br>')}</div>
+            `;
+            container.appendChild(msg);
             container.scrollTop = container.scrollHeight;
         }
 
-        function showTyping() {
+        // 添加按钮消息
+        function addButtons(content, buttons, type = 'ai') {
             const container = document.getElementById('chatContainer');
-            const typingDiv = document.createElement('div');
-            typingDiv.className = 'message ai';
-            typingDiv.id = 'typingIndicator';
-            typingDiv.innerHTML = `
-                <div class="message-avatar">✨</div>
-                <div class="typing">
-                    <span></span><span></span><span></span>
+            const msg = document.createElement('div');
+            msg.className = `message ${type}`;
+            msg.innerHTML = `
+                <div class="message-avatar">${type === 'ai' ? '💇' : '👤'}</div>
+                <div class="message-content">
+                    ${content.replace(/\n/g, '<br>')}
+                    <div id="dynamicButtons" class="${type === 'ai' ? 'service-buttons' : 'staff-buttons'}"></div>
                 </div>
             `;
-            container.appendChild(typingDiv);
+            container.appendChild(msg);
+
+            const btnContainer = msg.querySelector('#dynamicButtons');
+            buttons.forEach(btn => {
+                const button = document.createElement('button');
+                button.className = type === 'ai' ? 'service-btn' : 'staff-btn';
+                button.innerHTML = btn.html;
+                button.onclick = () => {
+                    addMessage(btn.text, 'user');
+                    btn.action();
+                };
+                btnContainer.appendChild(button);
+            });
+
             container.scrollTop = container.scrollHeight;
         }
 
-        function hideTyping() {
-            const typing = document.getElementById('typingIndicator');
-            if (typing) typing.remove();
-        }
-
+        // 发送消息
         function sendMessage() {
             const input = document.getElementById('userInput');
             const msg = input.value.trim();
             if (!msg) return;
 
-            addMessage(msg, true);
+            addMessage(msg, 'user');
             input.value = '';
 
-            showTyping();
-
+            // 模拟AI思考
             setTimeout(() => {
-                hideTyping();
                 const response = processMessage(msg);
-                addMessage(response);
-            }, 800 + Math.random() * 500);
+                addMessage(response, 'ai');
+            }, 500 + Math.random() * 500);
         }
 
-        function submitAppointment() {
+        // 处理消息
+        function processMessage(userMsg) {
+            const msg = userMsg.toLowerCase().trim();
+
+            // 问候和基础查询
+            if (msg.includes('地址') || msg.includes('在哪') || msg.includes('位置')) {
+                return `📍 我们的地址是：\n\n${KNOWLEDGE.shop.address}\n\n🕐 营业时间：${KNOWLEDGE.shop.hours}\n📞 联系电话：${KNOWLEDGE.shop.phone}`;
+            }
+
+            if (msg.includes('电话') || msg.includes('联系')) {
+                return `📞 联系我们：\n\n电话：${KNOWLEDGE.shop.phone}\n地址：${KNOWLEDGE.shop.address}`;
+            }
+
+            if (msg.includes('营业') || msg.includes('开门')) {
+                return `🕐 营业时间：\n\n${KNOWLEDGE.shop.hours}\n\n欢迎提前预约，避开高峰期～`;
+            }
+
+            if (msg.includes('理发师') || msg.includes('发型师') || msg.includes('师傅')) {
+                let staffList = '👨‍💼 我们的理发师团队：\n\n';
+                KNOWLEDGE.staff.forEach(s => {
+                    staffList += `• ${s.name}（${s.title}）\n`;
+                });
+                return staffList;
+            }
+
+            // 预约流程
+            switch (state.step) {
+                case 'greeting':
+                    if (msg.includes('预约') || msg.includes('想') || msg.includes('做') || msg.includes('洗') || msg.includes('染') || msg.includes('烫') || msg.includes('剪')) {
+                        state.step = 'service';
+                        return showServices();
+                    }
+                    return KNOWLEDGE.workflow.serviceAsk;
+
+                case 'service':
+                    // 点击服务按钮后，state.step 已更新，这里处理文字输入
+                    for (const service of Object.keys(KNOWLEDGE.services)) {
+                        if (msg.includes(service.replace('+', '')) || service.includes(msg)) {
+                            state.selectedService = service;
+                            state.step = 'staff';
+                            return showStaff(service);
+                        }
+                    }
+                    // 如果输入了其他内容，显示服务列表
+                    return showServices();
+
+                case 'staff':
+                    for (const s of KNOWLEDGE.staff) {
+                        if (msg.includes(s.name)) {
+                            state.selectedStaff = s.name;
+                            state.step = 'form';
+                            return showForm(s);
+                        }
+                    }
+                    return showStaff(null);
+
+                case 'form':
+                    return '请填写上面的预约表单，然后点击"确认预约信息"按钮～';
+
+                default:
+                    state.step = 'service';
+                    return showServices();
+            }
+        }
+
+        // 显示服务列表
+        function showServices() {
+            let content = '请选择您想做的服务：\n\n';
+            addButtons(content, Object.entries(KNOWLEDGE.services).map(([name, info]) => ({
+                html: `<span class="name">${name}</span><span class="price">${info.price}</span>`,
+                text: name,
+                action: () => {
+                    state.selectedService = name;
+                    state.step = 'staff';
+                    const response = showStaff(name);
+                    addMessage(response, 'ai');
+                }
+            })));
+            return ''; // 消息已通过addButtons添加
+        }
+
+        // 显示理发师列表
+        function showStaff(selectedService) {
+            let content = '';
+            if (selectedService) {
+                content = `您选择了【${selectedService}】，价格：${KNOWLEDGE.services[selectedService].price}\n\n`;
+            }
+            content += '请选择理发师：\n\n';
+
+            addButtons(content, KNOWLEDGE.staff.map(s => ({
+                html: `<span><strong>${s.name}</strong> <span class="title">${s.title}</span></span><span style="font-size:12px;color:var(--accent-light)">${s.exp}</span>`,
+                text: s.name,
+                action: () => {
+                    state.selectedStaff = s.name;
+                    state.step = 'form';
+                    const response = showForm(s);
+                    addMessage(response, 'ai');
+                }
+            })));
+            return '';
+        }
+
+        // 显示预约表单
+        function showForm(staff) {
+            const today = new Date().toISOString().split('T')[0];
+            const times = ['10:00', '11:00', '12:00', '13:00', '14:00', '15:00', '16:00', '17:00', '18:00', '19:00', '20:00'];
+
+            return `${staff.name}（${staff.title}，${staff.exp}经验）\n擅长：${staff.special}\n\n请填写预约信息：\n\n<form id="appointmentForm" class="appointment-form">
+<div class="form-group"><label>您的姓名</label><input type="text" id="formName" placeholder="请输入姓名" required></div>
+<div class="form-group"><label>联系电话</label><input type="tel" id="formPhone" placeholder="请输入手机号" required></div>
+<div class="form-group"><label>预约日期</label><input type="date" id="formDate" value="${today}" min="${today}" required></div>
+<div class="form-group"><label>预约时间</label><select id="formTime" required>${times.map(t => `<option value="${t}">${t}</option>`).join('')}</select></div>
+<button type="button" class="form-submit" onclick="submitAppointment()">确认预约信息</button>
+</form>`;
+        }
+
+        // 提交预约
+        async function submitAppointment() {
             const name = document.getElementById('formName')?.value;
             const phone = document.getElementById('formPhone')?.value;
             const date = document.getElementById('formDate')?.value;
@@ -602,64 +689,84 @@
                 return;
             }
 
-            // 保存预约数据
+            // 验证手机号格式
+            if (!/^1[3-9]\d{9}$/.test(phone)) {
+                alert('请输入正确的手机号');
+                return;
+            }
+
+            // 创建预约数据
             const appointment = {
+                id: Date.now(),
                 name,
-                phone,
+                phone: phone.slice(0, 3) + '****' + phone.slice(-4), // 脱敏
+                phoneRaw: phone,
                 service: state.selectedService,
+                servicePrice: KNOWLEDGE.services[state.selectedService]?.price || '',
                 stylist: state.selectedStaff,
                 date,
                 time,
-                createdAt: new Date().toISOString()
+                createdAt: new Date().toISOString(),
+                status: '待确认'
             };
 
-            saveAppointment(appointment);
-
-            state.step = 'success';
-            addMessage(KNOWLEDGE.workflow.appointmentSuccess
-                .replace('{date}', date)
-                .replace('{time}', time)
-                .replace('{stylist}', state.selectedStaff));
-        }
-
-        function saveAppointment(data) {
-            // 本地存储
+            // 保存到本地
             const appointments = JSON.parse(localStorage.getItem('xingyi_appointments') || '[]');
-            appointments.push(data);
+            appointments.push(appointment);
             localStorage.setItem('xingyi_appointments', JSON.stringify(appointments));
 
-            // 发送到服务器（如果有配置）
-            if (CONFIG.storageUrl) {
-                fetch(CONFIG.storageUrl, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(data)
-                }).catch(console.error);
+            // 同步到GitHub
+            if (state.token) {
+                await syncToGitHub(appointment);
             }
 
-            // 发送邮件通知（如果有配置）
-            if (CONFIG.notifyEmail) {
-                sendEmailNotification(data);
-            }
-
-            console.log('预约已保存:', data);
+            state.step = 'success';
+            addMessage(`🎉 预约成功！\n\n我们已收到您的预约，稍后会有工作人员电话确认。\n\n📍 到店地址：青岛市南区万象汇3楼308\n📞 有问题可致电：0532-88888888\n\n期待为您服务！`, 'ai');
         }
 
-        function sendEmailNotification(data) {
-            const subject = encodeURIComponent(`【星艺造型】新预约：${data.name} - ${data.service}`);
-            const body = encodeURIComponent(`
-新预约信息：
+        // 同步到GitHub
+        async function syncToGitHub(appointment) {
+            try {
+                // 创建Issue
+                const issueData = {
+                    title: `📅 新预约：${appointment.name} - ${appointment.service}`,
+                    body: `## 预约信息
 
-姓名：${data.name}
-电话：${data.phone}
-服务：${data.service}
-理发师：${data.stylist}
-日期：${data.date}
-时间：${data.time}
+| 项目 | 内容 |
+|------|------|
+| 姓名 | ${appointment.name} |
+| 电话 | ${appointment.phone} |
+| 服务 | ${appointment.service}（${appointment.servicePrice}） |
+| 理发师 | ${appointment.stylist} |
+| 日期 | ${appointment.date} |
+| 时间 | ${appointment.time} |
+| 提交时间 | ${new Date(appointment.createdAt).toLocaleString('zh-CN')} |
 
-请及时确认～
-            `);
-            window.open(`mailto:${CONFIG.notifyEmail}?subject=${subject}&body=${body}`);
+---
+*由星艺造型系统自动创建*`,
+                    labels: [CONFIG.label]
+                };
+
+                const response = await fetch(`https://api.github.com/repos/${CONFIG.repo}/issues`, {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `token ${state.token}`,
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/vnd.github.v3+json'
+                    },
+                    body: JSON.stringify(issueData)
+                });
+
+                if (response.ok) {
+                    updateSyncStatus(true);
+                    console.log('预约已同步到GitHub');
+                } else {
+                    const error = await response.json();
+                    console.error('同步失败:', error);
+                }
+            } catch (error) {
+                console.error('同步错误:', error);
+            }
         }
 
         // 回车发送
@@ -668,9 +775,7 @@
         });
 
         // 初始化
-        window.onload = () => {
-            addMessage(KNOWLEDGE.workflow.greeting);
-        };
+        init();
     </script>
 </body>
 </html>
