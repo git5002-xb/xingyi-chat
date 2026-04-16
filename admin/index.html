@@ -1,0 +1,649 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>星艺造型 - 老板管理后台</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --primary: #1a1a2e;
+            --accent: #e94560;
+            --accent-light: #ff6b6b;
+            --bg: #0f0f1a;
+            --card: #16213e;
+            --text: #eaeaea;
+            --text-dim: #8892b0;
+            --border: rgba(233, 69, 96, 0.2);
+            --success: #4ade80;
+            --warning: #fbbf24;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+        }
+        .header {
+            background: linear-gradient(135deg, var(--primary), var(--card));
+            padding: 16px 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        .header h1 {
+            font-size: 18px;
+            background: linear-gradient(135deg, #fff, var(--accent-light));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .header-right { font-size: 13px; color: var(--text-dim); }
+        .status-dot {
+            width: 8px; height: 8px; background: var(--success);
+            border-radius: 50%; display: inline-block; margin-right: 6px;
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
+        .nav {
+            background: var(--card);
+            padding: 0 24px;
+            display: flex;
+            gap: 4px;
+            border-bottom: 1px solid var(--border);
+        }
+        .nav-btn {
+            padding: 14px 20px;
+            background: transparent;
+            border: none;
+            color: var(--text-dim);
+            font-size: 14px;
+            cursor: pointer;
+            border-bottom: 2px solid transparent;
+            transition: all 0.2s;
+        }
+        .nav-btn:hover { color: var(--text); }
+        .nav-btn.active { color: var(--accent-light); border-bottom-color: var(--accent); }
+        .main { padding: 24px; max-width: 1200px; margin: 0 auto; }
+        .page { display: none; }
+        .page.active { display: block; }
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+        .stat-card {
+            background: var(--card);
+            border-radius: 12px;
+            padding: 20px;
+            border: 1px solid var(--border);
+        }
+        .stat-card .label { font-size: 13px; color: var(--text-dim); margin-bottom: 8px; }
+        .stat-card .value { font-size: 28px; font-weight: 700; color: var(--accent-light); }
+        .section-title {
+            font-size: 16px; font-weight: 600; margin-bottom: 16px;
+            display: flex; align-items: center; gap: 8px;
+        }
+        .section-title::before {
+            content: ''; width: 4px; height: 16px;
+            background: var(--accent); border-radius: 2px;
+        }
+        .table-container {
+            background: var(--card);
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid var(--border);
+        }
+        table { width: 100%; border-collapse: collapse; }
+        th {
+            background: #1a2744;
+            padding: 14px 16px;
+            text-align: left;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-dim);
+            border-bottom: 1px solid var(--border);
+        }
+        td {
+            padding: 14px 16px;
+            font-size: 14px;
+            border-bottom: 1px solid rgba(255,255,255,0.03);
+        }
+        tr:last-child td { border-bottom: none; }
+        tr:hover td { background: rgba(255,255,255,0.02); }
+        .badge {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+        .badge-success { background: rgba(74, 222, 128, 0.15); color: var(--success); }
+        .badge-warning { background: rgba(251, 191, 36, 0.15); color: var(--warning); }
+        .badge-info { background: rgba(96, 165, 250, 0.15); color: #60a5fa; }
+        .btn {
+            padding: 6px 12px;
+            border-radius: 6px;
+            border: none;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .btn-primary { background: var(--accent); color: #fff; }
+        .btn-primary:hover { background: var(--accent-light); }
+        .btn-outline { background: transparent; border: 1px solid var(--border); color: var(--text-dim); }
+        .btn-outline:hover { border-color: var(--accent); color: var(--accent); }
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: var(--text-dim);
+        }
+        .empty-state .icon { font-size: 48px; margin-bottom: 16px; opacity: 0.5; }
+        
+        /* Chat styles */
+        .chat-wrapper {
+            display: flex;
+            gap: 24px;
+            height: calc(100vh - 200px);
+            min-height: 500px;
+        }
+        .chat-list {
+            width: 280px;
+            background: var(--card);
+            border-radius: 12px;
+            border: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+        .chat-list-header {
+            padding: 16px;
+            border-bottom: 1px solid var(--border);
+            font-weight: 600;
+            font-size: 14px;
+        }
+        .chat-list-items { flex: 1; overflow-y: auto; }
+        .chat-item {
+            padding: 14px 16px;
+            border-bottom: 1px solid rgba(255,255,255,0.03);
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .chat-item:hover { background: rgba(255,255,255,0.05); }
+        .chat-item.active { background: rgba(233, 69, 96, 0.2); border-left: 3px solid var(--accent); }
+        .chat-item-name { font-weight: 600; font-size: 14px; margin-bottom: 4px; }
+        .chat-item-preview { font-size: 12px; color: var(--text-dim); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .chat-item-time { font-size: 11px; color: var(--text-dim); margin-top: 4px; }
+        .chat-main {
+            flex: 1;
+            background: var(--card);
+            border-radius: 12px;
+            border: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+        .chat-header {
+            padding: 16px;
+            border-bottom: 1px solid var(--border);
+            font-weight: 600;
+        }
+        .chat-messages {
+            flex: 1;
+            overflow-y: auto;
+            padding: 16px;
+        }
+        .chat-msg {
+            margin-bottom: 16px;
+            display: flex;
+            gap: 10px;
+        }
+        .chat-msg.user { flex-direction: row-reverse; }
+        .chat-msg-content {
+            max-width: 70%;
+            padding: 12px 16px;
+            border-radius: 16px;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+        .chat-msg.ai .chat-msg-content { background: #1a2744; border-bottom-left-radius: 4px; }
+        .chat-msg.user .chat-msg-content { background: var(--accent); color: #fff; border-bottom-right-radius: 4px; }
+        .chat-input-area {
+            padding: 16px;
+            border-top: 1px solid var(--border);
+            display: flex;
+            gap: 10px;
+        }
+        .chat-input-area input {
+            flex: 1;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            padding: 12px 20px;
+            color: var(--text);
+            font-size: 14px;
+            outline: none;
+        }
+        .chat-input-area input:focus { border-color: var(--accent); }
+        .send-btn {
+            width: 44px; height: 44px;
+            background: var(--accent);
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.2s;
+        }
+        .send-btn:hover { transform: scale(1.05); }
+        .send-btn svg { width: 18px; height: 18px; fill: #fff; }
+        .no-chat-selected {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-dim);
+        }
+        
+        /* Settings */
+        .settings-section {
+            background: var(--card);
+            border-radius: 12px;
+            padding: 24px;
+            border: 1px solid var(--border);
+            margin-bottom: 24px;
+        }
+        .settings-section h3 { font-size: 16px; margin-bottom: 20px; }
+        .form-group { margin-bottom: 16px; }
+        .form-group label { display: block; font-size: 13px; color: var(--text-dim); margin-bottom: 6px; }
+        .form-group input {
+            width: 100%;
+            max-width: 400px;
+            padding: 12px;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--text);
+            font-size: 14px;
+            outline: none;
+        }
+        .form-group input:focus { border-color: var(--accent); }
+        .form-hint { font-size: 12px; color: var(--text-dim); margin-top: 6px; }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <h1>星艺造型 · 管理后台</h1>
+        <div class="header-right">
+            <span class="status-dot"></span>
+            <span id="todayDate">4月16日 周四</span>
+        </div>
+    </header>
+
+    <nav class="nav">
+        <button class="nav-btn active" onclick="switchTab('dashboard')">数据概览</button>
+        <button class="nav-btn" onclick="switchTab('appointments')">预约管理</button>
+        <button class="nav-btn" onclick="switchTab('messages')">客户咨询</button>
+        <button class="nav-btn" onclick="switchTab('settings')">设置</button>
+    </nav>
+
+    <main class="main">
+        <!-- 数据概览 -->
+        <div id="tab-dashboard" class="page active">
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="label">今日预约</div>
+                    <div class="value" id="statToday">0</div>
+                    <div class="label">待服务</div>
+                </div>
+                <div class="stat-card">
+                    <div class="label">本周预约</div>
+                    <div class="value" id="statWeek">0</div>
+                    <div class="label">本周累计</div>
+                </div>
+                <div class="stat-card">
+                    <div class="label">本月预约</div>
+                    <div class="value" id="statMonth">0</div>
+                    <div class="label">本月累计</div>
+                </div>
+                <div class="stat-card">
+                    <div class="label">待回复咨询</div>
+                    <div class="value" id="statUnread">0</div>
+                    <div class="label">需要处理</div>
+                </div>
+            </div>
+
+            <div class="section-title">今日预约</div>
+            <div class="table-container" id="todayAppointments">
+                <div class="empty-state">
+                    <div class="icon">📅</div>
+                    <p>暂无预约</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 预约管理 -->
+        <div id="tab-appointments" class="page">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+                <div class="section-title" style="margin-bottom: 0;">全部预约</div>
+                <button class="btn btn-outline" onclick="exportAppointments()">导出数据</button>
+            </div>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>客户</th>
+                            <th>电话</th>
+                            <th>服务</th>
+                            <th>理发师</th>
+                            <th>日期</th>
+                            <th>时间</th>
+                            <th>状态</th>
+                            <th>操作</th>
+                        </tr>
+                    </thead>
+                    <tbody id="appointmentsTable"></tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- 客户咨询 -->
+        <div id="tab-messages" class="page">
+            <div class="chat-wrapper">
+                <div class="chat-list">
+                    <div class="chat-list-header">客户咨询 <span id="unreadBadge"></span></div>
+                    <div class="chat-list-items" id="chatListItems">
+                        <div class="empty-state">
+                            <div class="icon">💬</div>
+                            <p>暂无咨询</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="chat-main">
+                    <div id="chatArea" class="no-chat-selected">
+                        <p>选择一个客户开始对话</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 设置 -->
+        <div id="tab-settings" class="page">
+            <div class="settings-section">
+                <h3>通知设置</h3>
+                <div class="form-group">
+                    <label>通知邮箱</label>
+                    <input type="email" id="settingEmail" placeholder="预约时发送邮件通知到此邮箱">
+                    <div class="form-hint">客户预约成功后，系统会发送邮件通知</div>
+                </div>
+                <div class="form-group">
+                    <label>联系电话</label>
+                    <input type="tel" id="settingPhone" placeholder="店铺联系电话">
+                </div>
+                <button class="btn btn-primary" onclick="saveSettings()">保存设置</button>
+            </div>
+
+            <div class="settings-section">
+                <h3>快捷操作</h3>
+                <div style="display: flex; gap: 12px; flex-wrap: wrap;">
+                    <button class="btn btn-outline" onclick="addTestData()">添加测试数据</button>
+                    <button class="btn btn-outline" onclick="clearAllData()">清空所有数据</button>
+                    <button class="btn btn-outline" onclick="exportAllData()">导出全部数据</button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // 店铺信息
+        const SHOP = {
+            name: '星艺造型',
+            tel: '0532-88669977',
+            address: '华润万象汇3楼308'
+        };
+
+        // 初始化日期
+        const now = new Date();
+        const weekdays = ['周日', '周一', '周二', '周三', '周四', '周五', '周六'];
+        document.getElementById('todayDate').textContent = 
+            `${now.getMonth()+1}月${now.getDate()}日 ${weekdays[now.getDay()]}`;
+
+        // 加载数据
+        let appointments = JSON.parse(localStorage.getItem('xingyi_appointments') || '[]');
+        let messages = JSON.parse(localStorage.getItem('xingyi_messages') || '[]');
+        let settings = JSON.parse(localStorage.getItem('xingyi_settings') || '{}');
+        let currentChat = null;
+
+        // 保存设置
+        if (settings.email) document.getElementById('settingEmail').value = settings.email;
+        if (settings.phone) document.getElementById('settingPhone').value = settings.phone;
+
+        // 标签切换
+        function switchTab(tab) {
+            document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+            event.target.classList.add('active');
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            document.getElementById('tab-' + tab).classList.add('active');
+            if (tab === 'dashboard') renderDashboard();
+            if (tab === 'appointments') renderAppointments();
+            if (tab === 'messages') renderChatList();
+        }
+
+        // 渲染数据概览
+        function renderDashboard() {
+            const today = new Date().toISOString().split('T')[0];
+            const weekStart = getWeekStart();
+            const monthStart = new Date().getFullYear() + '-' + 
+                String(new Date().getMonth() + 1).padStart(2, '0') + '-01';
+
+            document.getElementById('statToday').textContent = 
+                appointments.filter(a => a.date === today).length;
+            document.getElementById('statWeek').textContent = 
+                appointments.filter(a => a.date >= weekStart).length;
+            document.getElementById('statMonth').textContent = 
+                appointments.filter(a => a.date >= monthStart).length;
+            document.getElementById('statUnread').textContent = 
+                messages.filter(m => !m.replied).length;
+
+            // 今日预约
+            const todayAppts = appointments.filter(a => a.date === today);
+            const container = document.getElementById('todayAppointments');
+            if (todayAppts.length === 0) {
+                container.innerHTML = '<div class="empty-state"><div class="icon">📅</div><p>今日暂无预约</p></div>';
+            } else {
+                container.innerHTML = '<table><thead><tr><th>时间</th><th>客户</th><th>服务</th><th>理发师</th><th>电话</th></tr></thead><tbody>' +
+                    todayAppts.map(a => `<tr><td>${a.time}</td><td>${a.name}</td><td>${a.service}</td><td>${a.stylist}</td><td>${a.phone}</td></tr>`).join('') +
+                    '</tbody></table>';
+            }
+        }
+
+        function getWeekStart() {
+            const d = new Date();
+            const day = d.getDay();
+            const diff = d.getDate() - day + (day === 0 ? -6 : 1);
+            return new Date(d.setDate(diff)).toISOString().split('T')[0];
+        }
+
+        // 渲染预约列表
+        function renderAppointments() {
+            const tbody = document.getElementById('appointmentsTable');
+            if (appointments.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="8" style="text-align:center;padding:40px;color:var(--text-dim)">暂无预约数据</td></tr>';
+                return;
+            }
+            appointments.sort((a, b) => new Date(b.date + ' ' + b.time) - new Date(a.date + ' ' + a.time));
+            tbody.innerHTML = appointments.map((a, i) => `
+                <tr>
+                    <td>${a.name}</td>
+                    <td>${a.phone}</td>
+                    <td>${a.service}</td>
+                    <td>${a.stylist}</td>
+                    <td>${a.date}</td>
+                    <td>${a.time}</td>
+                    <td><span class="badge badge-success">已完成</span></td>
+                    <td>
+                        <button class="btn btn-outline" onclick="deleteAppointment(${i})">删除</button>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        // 删除预约
+        function deleteAppointment(index) {
+            if (confirm('确定删除此预约？')) {
+                appointments.splice(index, 1);
+                localStorage.setItem('xingyi_appointments', JSON.stringify(appointments));
+                renderAppointments();
+                renderDashboard();
+            }
+        }
+
+        // 渲染咨询列表
+        function renderChatList() {
+            const container = document.getElementById('chatListItems');
+            const unreadCount = messages.filter(m => !m.replied).length;
+            document.getElementById('unreadBadge').textContent = unreadCount > 0 ? ` (${unreadCount})` : '';
+            
+            if (messages.length === 0) {
+                container.innerHTML = '<div class="empty-state"><div class="icon">💬</div><p>暂无客户咨询</p></div>';
+                return;
+            }
+            container.innerHTML = messages.map((m, i) => `
+                <div class="chat-item ${currentChat === i ? 'active' : ''}" onclick="openChat(${i})">
+                    <div class="chat-item-name">${m.name || '访客'} ${m.replied ? '' : '<span style="color:var(--accent)">●</span>'}</div>
+                    <div class="chat-item-preview">${m.messages[m.messages.length-1]?.text || ''}</div>
+                    <div class="chat-item-time">${m.messages[m.messages.length-1]?.time || ''}</div>
+                </div>
+            `).join('');
+        }
+
+        // 打开对话
+        function openChat(index) {
+            currentChat = index;
+            renderChatList();
+            const m = messages[index];
+            const area = document.getElementById('chatArea');
+            area.innerHTML = `
+                <div class="chat-header">与 ${m.name || '访客'} 的对话</div>
+                <div class="chat-messages" id="chatMessages">
+                    ${m.messages.map(msg => `
+                        <div class="chat-msg ${msg.from}">
+                            <div class="chat-msg-content">${msg.text}</div>
+                        </div>
+                    `).join('')}
+                </div>
+                <div class="chat-input-area">
+                    <input type="text" id="replyInput" placeholder="输入回复..." onkeypress="if(event.key==='Enter')sendReply()">
+                    <button class="send-btn" onclick="sendReply()">
+                        <svg viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
+                    </button>
+                </div>
+            `;
+            area.classList.remove('no-chat-selected');
+            setTimeout(() => {
+                document.getElementById('chatMessages').scrollTop = document.getElementById('chatMessages').scrollHeight;
+            }, 100);
+        }
+
+        // 发送回复
+        function sendReply() {
+            const input = document.getElementById('replyInput');
+            const text = input.value.trim();
+            if (!text) return;
+            
+            const now = new Date();
+            const time = `${String(now.getHours()).padStart(2,'0')}:${String(now.getMinutes()).padStart(2,'0')}`;
+            messages[currentChat].messages.push({ from: 'shop', text, time });
+            messages[currentChat].replied = true;
+            localStorage.setItem('xingyi_messages', JSON.stringify(messages));
+            input.value = '';
+            openChat(currentChat);
+        }
+
+        // 保存设置
+        function saveSettings() {
+            settings.email = document.getElementById('settingEmail').value;
+            settings.phone = document.getElementById('settingPhone').value;
+            localStorage.setItem('xingyi_settings', JSON.stringify(settings));
+            alert('设置已保存！');
+        }
+
+        // 添加测试数据
+        function addTestData() {
+            const today = new Date();
+            const todayStr = today.toISOString().split('T')[0];
+            const tomorrow = new Date(today);
+            tomorrow.setDate(tomorrow.getDate() + 1);
+            const tomorrowStr = tomorrow.toISOString().split('T')[0];
+
+            appointments.push(
+                { name: '张三', phone: '13800138001', service: '洗剪吹', stylist: '林辰', date: todayStr, time: '14:00' },
+                { name: '李四', phone: '13800138002', service: '烫发', stylist: '苏晚', date: todayStr, time: '16:00' },
+                { name: '王五', phone: '13800138003', service: '染发', stylist: '周宇', date: tomorrowStr, time: '10:00' }
+            );
+            messages.push(
+                { 
+                    name: '小红',
+                    replied: false,
+                    messages: [
+                        { from: 'customer', text: '我想问一下，你们烫发多少钱？', time: '10:30' },
+                        { from: 'ai', text: '您好！我们烫发价格是298-798元不等，根据理发师等级定价。请问您想了解哪种烫发呢？', time: '10:31' },
+                        { from: 'customer', text: '想烫个法式卷，中长发，大概多少钱？', time: '10:32' }
+                    ]
+                }
+            );
+            localStorage.setItem('xingyi_appointments', JSON.stringify(appointments));
+            localStorage.setItem('xingyi_messages', JSON.stringify(messages));
+            alert('测试数据已添加！');
+            renderDashboard();
+            renderChatList();
+        }
+
+        // 清空数据
+        function clearAllData() {
+            if (confirm('确定清空所有数据？此操作不可恢复！')) {
+                localStorage.removeItem('xingyi_appointments');
+                localStorage.removeItem('xingyi_messages');
+                appointments = [];
+                messages = [];
+                renderDashboard();
+                renderAppointments();
+                renderChatList();
+                alert('数据已清空');
+            }
+        }
+
+        // 导出数据
+        function exportAppointments() {
+            const csv = '姓名,电话,服务,理发师,日期,时间\n' + 
+                appointments.map(a => `${a.name},${a.phone},${a.service},${a.stylist},${a.date},${a.time}`).join('\n');
+            downloadFile('预约数据_' + new Date().toISOString().split('T')[0] + '.csv', csv);
+        }
+
+        function exportAllData() {
+            const data = {
+                appointments,
+                messages,
+                exportTime: new Date().toISOString()
+            };
+            downloadFile('星艺数据_' + new Date().toISOString().split('T')[0] + '.json', JSON.stringify(data, null, 2));
+        }
+
+        function downloadFile(filename, content) {
+            const blob = new Blob([content], { type: 'text/plain;charset=utf-8' });
+            const a = document.createElement('a');
+            a.href = URL.createObjectURL(blob);
+            a.download = filename;
+            a.click();
+        }
+
+        // 初始渲染
+        renderDashboard();
+    </script>
+</body>
+</html>
