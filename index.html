@@ -5,11 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>星艺造型 - 在线预约</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
         :root {
             --primary: #1a1a2e;
@@ -20,12 +16,10 @@
             --text: #eaeaea;
             --text-dim: #8892b0;
             --border: rgba(233, 69, 96, 0.2);
-            --success: #10b981;
-            --warning: #f59e0b;
         }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', sans-serif;
             background: var(--bg);
             color: var(--text);
             min-height: 100vh;
@@ -33,10 +27,9 @@
             flex-direction: column;
         }
 
-        /* Header */
         .header {
             background: linear-gradient(135deg, var(--primary) 0%, var(--card) 100%);
-            padding: 20px;
+            padding: 16px 20px;
             text-align: center;
             border-bottom: 1px solid var(--border);
             position: sticky;
@@ -45,58 +38,66 @@
         }
 
         .header h1 {
-            font-size: 20px;
+            font-size: 18px;
             font-weight: 600;
             background: linear-gradient(135deg, #fff 0%, var(--accent-light) 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            background-clip: text;
         }
 
-        .header p {
-            font-size: 12px;
-            color: var(--text-dim);
-            margin-top: 4px;
+        .sync-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 11px;
+            padding: 4px 10px;
+            border-radius: 12px;
+            background: rgba(255,255,255,0.1);
+            margin-top: 6px;
         }
 
-        /* Token Setup */
+        .sync-status .dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: #666;
+        }
+
+        .sync-status.connected .dot { background: #4ade80; }
+        .sync-status.connected { background: rgba(74, 222, 128, 0.15); color: #4ade80; }
+
         .token-setup {
             background: var(--card);
-            border-radius: 16px;
             padding: 20px;
-            margin: 20px;
+            margin: 16px;
+            border-radius: 12px;
+            text-align: center;
+            border: 1px solid var(--border);
         }
 
-        .token-setup h3 {
-            font-size: 16px;
-            margin-bottom: 12px;
-            color: var(--accent-light);
-        }
-
+        .token-setup h3 { font-size: 14px; margin-bottom: 12px; color: var(--accent-light); }
         .token-setup input {
             width: 100%;
-            padding: 12px;
-            border-radius: 8px;
+            padding: 10px 14px;
             border: 1px solid var(--border);
+            border-radius: 8px;
             background: var(--bg);
             color: var(--text);
             font-size: 14px;
-            margin-bottom: 12px;
+            margin-bottom: 10px;
         }
 
         .token-setup button {
             width: 100%;
-            padding: 12px;
-            border-radius: 8px;
-            border: none;
-            background: linear-gradient(135deg, var(--accent) 0%, var(--accent-light) 100%);
+            padding: 10px;
+            background: var(--accent);
             color: white;
-            font-size: 14px;
-            font-weight: 600;
+            border: none;
+            border-radius: 8px;
             cursor: pointer;
+            font-size: 14px;
         }
 
-        /* Chat Container */
         .chat-container {
             flex: 1;
             overflow-y: auto;
@@ -104,7 +105,6 @@
             padding-bottom: 100px;
         }
 
-        /* Message Styles */
         .message {
             display: flex;
             margin-bottom: 16px;
@@ -116,13 +116,8 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
-        .message.ai {
-            justify-content: flex-start;
-        }
-
-        .message.user {
-            justify-content: flex-end;
-        }
+        .message.user { justify-content: flex-end; }
+        .message.user .message-content { background: var(--accent); color: white; }
 
         .message-avatar {
             width: 36px;
@@ -135,74 +130,87 @@
             flex-shrink: 0;
         }
 
-        .message.ai .message-avatar {
-            background: linear-gradient(135deg, var(--accent) 0%, var(--accent-light) 100%);
-        }
-
-        .message.user .message-avatar {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        }
+        .message.ai .message-avatar { background: linear-gradient(135deg, var(--accent) 0%, var(--accent-light) 100%); }
+        .message.user .message-avatar { background: rgba(255,255,255,0.2); }
 
         .message-content {
-            max-width: 75%;
+            max-width: 80%;
             padding: 12px 16px;
             border-radius: 16px;
-            line-height: 1.5;
-            font-size: 15px;
-        }
-
-        .message.ai .message-content {
             background: var(--card);
-            border: 1px solid var(--border);
-            border-bottom-left-radius: 4px;
-            margin-left: 10px;
+            line-height: 1.6;
+            font-size: 14px;
         }
 
-        .message.user .message-content {
-            background: linear-gradient(135deg, var(--accent) 0%, var(--accent-light) 100%);
-            color: white;
-            border-bottom-right-radius: 4px;
-            margin-right: 10px;
+        .message.user .message-content { border-bottom-right-radius: 4px; }
+        .message.ai .message-content { border-bottom-left-radius: 4px; }
+
+        .input-area {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(transparent, var(--bg) 20%);
+            padding: 20px;
+            padding-top: 40px;
         }
 
-        /* Service Buttons */
-        .service-buttons {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
+        .input-wrapper {
+            display: flex;
             gap: 10px;
+            background: var(--card);
+            border-radius: 24px;
+            padding: 6px;
+            border: 1px solid var(--border);
+        }
+
+        .input-wrapper input {
+            flex: 1;
+            border: none;
+            background: transparent;
+            color: var(--text);
+            padding: 10px 16px;
+            font-size: 15px;
+            outline: none;
+        }
+
+        .input-wrapper button {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: var(--accent);
+            border: none;
+            color: white;
+            font-size: 18px;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .input-wrapper button:active { transform: scale(0.95); }
+
+        .service-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
             margin-top: 12px;
         }
 
         .service-btn {
-            padding: 14px 16px;
-            border-radius: 12px;
-            border: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 16px;
             background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: 10px;
             color: var(--text);
-            font-size: 14px;
             cursor: pointer;
-            transition: all 0.3s ease;
-            text-align: left;
+            transition: all 0.2s;
         }
 
-        .service-btn:hover {
-            border-color: var(--accent);
-            background: rgba(233, 69, 96, 0.1);
-            transform: translateY(-2px);
-        }
+        .service-btn:hover { border-color: var(--accent); background: rgba(233,69,96,0.1); }
+        .service-btn .price { color: var(--accent-light); font-size: 13px; }
 
-        .service-btn .name {
-            font-weight: 600;
-            color: var(--accent-light);
-        }
-
-        .service-btn .price {
-            font-size: 12px;
-            color: var(--text-dim);
-            margin-top: 4px;
-        }
-
-        /* Staff Buttons */
         .staff-buttons {
             display: flex;
             flex-direction: column;
@@ -211,52 +219,29 @@
         }
 
         .staff-btn {
-            padding: 12px 16px;
-            border-radius: 10px;
-            border: 1px solid var(--border);
-            background: var(--bg);
-            color: var(--text);
-            font-size: 14px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            text-align: left;
             display: flex;
             justify-content: space-between;
             align-items: center;
-        }
-
-        .staff-btn:hover {
-            border-color: var(--accent);
-            background: rgba(233, 69, 96, 0.1);
-        }
-
-        .staff-btn .title {
-            font-size: 12px;
-            color: var(--text-dim);
-        }
-
-        /* Form Styles */
-        .appointment-form {
-            margin-top: 12px;
-        }
-
-        .form-group {
-            margin-bottom: 12px;
-        }
-
-        .form-group label {
-            display: block;
-            font-size: 13px;
-            color: var(--text-dim);
-            margin-bottom: 6px;
-        }
-
-        .form-group input,
-        .form-group select {
-            width: 100%;
-            padding: 12px;
-            border-radius: 8px;
+            padding: 12px 16px;
+            background: var(--bg);
             border: 1px solid var(--border);
+            border-radius: 10px;
+            color: var(--text);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .staff-btn:hover { border-color: var(--accent); background: rgba(233,69,96,0.1); }
+        .staff-btn .title { color: var(--text-dim); font-size: 12px; margin-left: 8px; }
+
+        .appointment-form { margin-top: 16px; }
+        .form-group { margin-bottom: 14px; }
+        .form-group label { display: block; font-size: 13px; color: var(--text-dim); margin-bottom: 6px; }
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid var(--border);
+            border-radius: 8px;
             background: var(--bg);
             color: var(--text);
             font-size: 14px;
@@ -265,149 +250,41 @@
         .form-submit {
             width: 100%;
             padding: 14px;
-            border-radius: 10px;
-            border: none;
-            background: linear-gradient(135deg, var(--success) 0%, #34d399 100%);
+            background: var(--accent);
             color: white;
+            border: none;
+            border-radius: 10px;
             font-size: 15px;
-            font-weight: 600;
             cursor: pointer;
             margin-top: 8px;
         }
 
-        .form-submit:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 20px rgba(16, 185, 129, 0.4);
-        }
-
-        /* Success Message */
-        .success-box {
-            background: linear-gradient(135deg, rgba(16, 185, 129, 0.1) 0%, rgba(52, 211, 153, 0.1) 100%);
-            border: 1px solid var(--success);
-            border-radius: 16px;
-            padding: 24px;
+        .success-message {
             text-align: center;
-        }
-
-        .success-box .icon {
-            font-size: 48px;
-            margin-bottom: 12px;
-        }
-
-        .success-box h3 {
-            color: var(--success);
-            margin-bottom: 8px;
-        }
-
-        .success-box .detail {
-            font-size: 13px;
-            color: var(--text-dim);
-            line-height: 1.6;
-        }
-
-        /* Input Area */
-        .input-area {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            background: linear-gradient(to top, var(--bg) 80%, transparent);
             padding: 20px;
         }
 
-        .input-wrapper {
-            display: flex;
-            gap: 10px;
-            max-width: 600px;
-            margin: 0 auto;
-        }
-
-        .input-wrapper input {
-            flex: 1;
-            padding: 14px 18px;
-            border-radius: 25px;
-            border: 1px solid var(--border);
-            background: var(--card);
-            color: var(--text);
-            font-size: 15px;
-            outline: none;
-        }
-
-        .input-wrapper input:focus {
-            border-color: var(--accent);
-        }
-
-        .input-wrapper button {
-            width: 48px;
-            height: 48px;
-            border-radius: 50%;
-            border: none;
-            background: linear-gradient(135deg, var(--accent) 0%, var(--accent-light) 100%);
-            color: white;
-            font-size: 18px;
-            cursor: pointer;
-            transition: transform 0.3s ease;
-        }
-
-        .input-wrapper button:hover {
-            transform: scale(1.1);
-        }
-
-        /* Status Badge */
-        .sync-status {
-            position: fixed;
-            top: 80px;
-            right: 16px;
-            padding: 6px 12px;
-            border-radius: 20px;
-            font-size: 12px;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            z-index: 50;
-        }
-
-        .sync-status.connected {
-            background: rgba(16, 185, 129, 0.2);
-            color: var(--success);
-        }
-
-        .sync-status.disconnected {
-            background: rgba(245, 158, 11, 0.2);
-            color: var(--warning);
-        }
-
-        .sync-status .dot {
-            width: 6px;
-            height: 6px;
-            border-radius: 50%;
-            background: currentColor;
-        }
+        .success-message .emoji { font-size: 48px; margin-bottom: 16px; }
+        .success-message h3 { color: var(--accent-light); margin-bottom: 12px; }
+        .success-message p { color: var(--text-dim); font-size: 13px; line-height: 1.8; }
     </style>
 </head>
 <body>
     <div class="header">
-        <h1>✨ 星艺造型</h1>
-        <p>轻奢店 · 预约服务</p>
+        <h1>💇 星艺造型 - 在线预约</h1>
+        <div id="syncStatus" class="sync-status">
+            <span class="dot"></span>
+            <span>未连接</span>
+        </div>
     </div>
 
-    <div id="syncStatus" class="sync-status disconnected">
-        <span class="dot"></span>
-        <span>未连接</span>
-    </div>
-
-    <div id="tokenSetup" class="token-setup" style="display: none;">
+    <div class="token-setup" id="tokenSetup" style="display:none;">
         <h3>🔗 首次使用需要授权</h3>
         <input type="password" id="githubToken" placeholder="粘贴你的GitHub Token">
         <button onclick="saveToken()">确认授权</button>
-        <p style="font-size: 12px; color: var(--text-dim); margin-top: 8px;">
-            Token用于同步预约数据到后台，仅限店主使用
-        </p>
     </div>
 
-    <div class="chat-container" id="chatContainer">
-        <!-- Messages will be inserted here -->
-    </div>
+    <div class="chat-container" id="chatContainer"></div>
 
     <div class="input-area">
         <div class="input-wrapper">
@@ -419,8 +296,8 @@
     <script>
         // 配置
         const CONFIG = {
-            repo: 'git5002-xb/xingyi-chat',  // 存储预约数据的仓库
-            label: 'appointment'  // Issue标签
+            repo: 'git5002-xb/xingyi-chat',
+            label: 'appointment'
         };
 
         // 状态管理
@@ -428,7 +305,8 @@
             step: 'greeting',
             selectedService: null,
             selectedStaff: null,
-            token: localStorage.getItem('xingyi_github_token') || ''
+            token: localStorage.getItem('xingyi_github_token') || '',
+            isProcessing: false  // 防止重复处理
         };
 
         // 知识库
@@ -452,20 +330,13 @@
                 { name: '陈默', title: '男士专家', exp: '6年', special: '男士理发、渐变雕刻' },
                 { name: '夏禾', title: '儿童造型师', exp: '4年', special: '儿童可爱发型' },
                 { name: '周宇', title: '色彩导师', exp: '7年', special: '创意染发、渐变挑染' }
-            ],
-            workflow: {
-                greeting: '👋 您好，欢迎来到星艺造型！\n\n我是您的专属客服小艺，请问今天想做什么服务呢？',
-                serviceAsk: '请告诉我您想做的服务：\n\n• 洗剪吹 68元\n• 洗剪吹+造型 98元\n• 染发 288元起\n• 烫发 388元起\n• 头皮护理 168元',
-                staffRecommend: '我们的理发师团队：',
-                appointmentAsk: '请填写您的预约信息：',
-                appointmentSuccess: '🎉 预约成功！\n\n我们已收到您的预约，稍后会有工作人员电话确认。\n\n📍 到店地址：青岛市南区万象汇3楼308\n📞 有问题可致电：0532-88888888\n\n期待为您服务！'
-            }
+            ]
         };
 
         // 初始化
         function init() {
             checkToken();
-            addMessage(KNOWLEDGE.workflow.greeting, 'ai');
+            addMessage('👋 您好，欢迎来到星艺造型！\n\n我是您的专属客服小艺，请问今天想做什么服务呢？', 'ai');
         }
 
         // 检查Token
@@ -473,7 +344,8 @@
             if (!state.token) {
                 document.getElementById('tokenSetup').style.display = 'block';
             } else {
-                updateSyncStatus(true);
+                document.getElementById('syncStatus').className = 'sync-status connected';
+                document.getElementById('syncStatus').innerHTML = '<span class="dot"></span><span>已同步</span>';
             }
         }
 
@@ -487,20 +359,9 @@
             state.token = token;
             localStorage.setItem('xingyi_github_token', token);
             document.getElementById('tokenSetup').style.display = 'none';
-            updateSyncStatus(true);
+            document.getElementById('syncStatus').className = 'sync-status connected';
+            document.getElementById('syncStatus').innerHTML = '<span class="dot"></span><span>已同步</span>';
             addMessage('✅ 已连接后台，数据将自动同步', 'ai');
-        }
-
-        // 更新同步状态
-        function updateSyncStatus(connected) {
-            const el = document.getElementById('syncStatus');
-            if (connected) {
-                el.className = 'sync-status connected';
-                el.innerHTML = '<span class="dot"></span><span>已同步</span>';
-            } else {
-                el.className = 'sync-status disconnected';
-                el.innerHTML = '<span class="dot"></span><span>未连接</span>';
-            }
         }
 
         // 添加消息
@@ -516,37 +377,137 @@
             container.scrollTop = container.scrollHeight;
         }
 
-        // 添加按钮消息
-        function addButtons(content, buttons, type = 'ai') {
+        // 添加服务按钮
+        function addServiceButtons() {
             const container = document.getElementById('chatContainer');
             const msg = document.createElement('div');
-            msg.className = `message ${type}`;
+            msg.className = 'message ai';
+            let buttonsHtml = '<div class="service-buttons">';
+            
+            Object.entries(KNOWLEDGE.services).forEach(([name, info]) => {
+                buttonsHtml += `<button class="service-btn" onclick="onServiceClick('${name}')">
+                    <span class="name">${name}</span>
+                    <span class="price">${info.price}</span>
+                </button>`;
+            });
+            buttonsHtml += '</div>';
+            
             msg.innerHTML = `
-                <div class="message-avatar">${type === 'ai' ? '💇' : '👤'}</div>
+                <div class="message-avatar">💇</div>
                 <div class="message-content">
-                    ${content.replace(/\n/g, '<br>')}
-                    <div id="dynamicButtons" class="${type === 'ai' ? 'service-buttons' : 'staff-buttons'}"></div>
+                    请选择您想做的服务：
+                    ${buttonsHtml}
                 </div>
             `;
             container.appendChild(msg);
-
-            const btnContainer = msg.querySelector('#dynamicButtons');
-            buttons.forEach(btn => {
-                const button = document.createElement('button');
-                button.className = type === 'ai' ? 'service-btn' : 'staff-btn';
-                button.innerHTML = btn.html;
-                button.onclick = () => {
-                    addMessage(btn.text, 'user');
-                    btn.action();
-                };
-                btnContainer.appendChild(button);
-            });
-
             container.scrollTop = container.scrollHeight;
         }
 
-        // 发送消息
+        // 添加理发师按钮
+        function addStaffButtons(service) {
+            const container = document.getElementById('chatContainer');
+            const msg = document.createElement('div');
+            msg.className = 'message ai';
+            let buttonsHtml = '<div class="staff-buttons">';
+            
+            KNOWLEDGE.staff.forEach(s => {
+                buttonsHtml += `<button class="staff-btn" onclick="onStaffClick('${s.name}')">
+                    <span><strong>${s.name}</strong><span class="title">${s.title}</span></span>
+                    <span style="font-size:12px;color:var(--accent-light)">${s.exp}</span>
+                </button>`;
+            });
+            buttonsHtml += '</div>';
+            
+            msg.innerHTML = `
+                <div class="message-avatar">💇</div>
+                <div class="message-content">
+                    您选择了【${service}】，价格：${KNOWLEDGE.services[service].price}
+                    <br><br>请选择理发师：
+                    ${buttonsHtml}
+                </div>
+            `;
+            container.appendChild(msg);
+            container.scrollTop = container.scrollHeight;
+        }
+
+        // 添加预约表单
+        function addAppointmentForm(staffName) {
+            const staff = KNOWLEDGE.staff.find(s => s.name === staffName);
+            const today = new Date().toISOString().split('T')[0];
+            const times = ['10:00', '11:00', '12:00', '13:00', '14:00', '15:00', '16:00', '17:00', '18:00', '19:00', '20:00'];
+            
+            const container = document.getElementById('chatContainer');
+            const msg = document.createElement('div');
+            msg.className = 'message ai';
+            msg.innerHTML = `
+                <div class="message-avatar">💇</div>
+                <div class="message-content">
+                    ${staff.name}（${staff.title}，${staff.exp}经验）
+                    <br>擅长：${staff.special}
+                    <br><br>请填写预约信息：
+                    <form class="appointment-form" onsubmit="return false;">
+                        <div class="form-group">
+                            <label>您的姓名</label>
+                            <input type="text" id="formName" placeholder="请输入姓名" required>
+                        </div>
+                        <div class="form-group">
+                            <label>联系电话</label>
+                            <input type="tel" id="formPhone" placeholder="请输入手机号" required>
+                        </div>
+                        <div class="form-group">
+                            <label>预约日期</label>
+                            <input type="date" id="formDate" value="${today}" min="${today}" required>
+                        </div>
+                        <div class="form-group">
+                            <label>预约时间</label>
+                            <select id="formTime" required>
+                                ${times.map(t => `<option value="${t}">${t}</option>`).join('')}
+                            </select>
+                        </div>
+                        <button type="button" class="form-submit" onclick="submitAppointment()">确认预约信息</button>
+                    </form>
+                </div>
+            `;
+            container.appendChild(msg);
+            container.scrollTop = container.scrollHeight;
+        }
+
+        // 点击服务按钮
+        function onServiceClick(serviceName) {
+            if (state.isProcessing) return;
+            state.isProcessing = true;
+            
+            state.selectedService = serviceName;
+            state.step = 'staff';
+            
+            addMessage(serviceName, 'user');
+            
+            setTimeout(() => {
+                addStaffButtons(serviceName);
+                state.isProcessing = false;
+            }, 300);
+        }
+
+        // 点击理发师按钮
+        function onStaffClick(staffName) {
+            if (state.isProcessing) return;
+            state.isProcessing = true;
+            
+            state.selectedStaff = staffName;
+            state.step = 'form';
+            
+            addMessage(staffName, 'user');
+            
+            setTimeout(() => {
+                addAppointmentForm(staffName);
+                state.isProcessing = false;
+            }, 300);
+        }
+
+        // 发送消息（仅处理文字输入）
         function sendMessage() {
+            if (state.isProcessing) return;
+            
             const input = document.getElementById('userInput');
             const msg = input.value.trim();
             if (!msg) return;
@@ -554,131 +515,57 @@
             addMessage(msg, 'user');
             input.value = '';
 
-            // 模拟AI思考
             setTimeout(() => {
-                const response = processMessage(msg);
-                addMessage(response, 'ai');
-            }, 500 + Math.random() * 500);
+                processUserText(msg);
+            }, 500);
         }
 
-        // 处理消息
-        function processMessage(userMsg) {
-            const msg = userMsg.toLowerCase().trim();
-
-            // 问候和基础查询
-            if (msg.includes('地址') || msg.includes('在哪') || msg.includes('位置')) {
-                return `📍 我们的地址是：\n\n${KNOWLEDGE.shop.address}\n\n🕐 营业时间：${KNOWLEDGE.shop.hours}\n📞 联系电话：${KNOWLEDGE.shop.phone}`;
+        // 处理用户文字输入
+        function processUserText(msg) {
+            const text = msg.toLowerCase();
+            
+            // 基础查询
+            if (text.includes('地址') || text.includes('在哪')) {
+                addMessage(`📍 我们的地址是：\n\n${KNOWLEDGE.shop.address}\n\n🕐 营业时间：${KNOWLEDGE.shop.hours}\n📞 联系电话：${KNOWLEDGE.shop.phone}`, 'ai');
+                return;
             }
 
-            if (msg.includes('电话') || msg.includes('联系')) {
-                return `📞 联系我们：\n\n电话：${KNOWLEDGE.shop.phone}\n地址：${KNOWLEDGE.shop.address}`;
+            if (text.includes('电话') || text.includes('联系')) {
+                addMessage(`📞 联系我们：\n\n电话：${KNOWLEDGE.shop.phone}\n地址：${KNOWLEDGE.shop.address}`, 'ai');
+                return;
             }
 
-            if (msg.includes('营业') || msg.includes('开门')) {
-                return `🕐 营业时间：\n\n${KNOWLEDGE.shop.hours}\n\n欢迎提前预约，避开高峰期～`;
+            if (text.includes('营业') || text.includes('开门')) {
+                addMessage(`🕐 营业时间：\n\n${KNOWLEDGE.shop.hours}\n\n欢迎提前预约，避开高峰期～`, 'ai');
+                return;
             }
 
-            if (msg.includes('理发师') || msg.includes('发型师') || msg.includes('师傅')) {
-                let staffList = '👨‍💼 我们的理发师团队：\n\n';
+            if (text.includes('理发师') || text.includes('发型师')) {
+                let list = '👨‍💼 我们的理发师团队：\n\n';
                 KNOWLEDGE.staff.forEach(s => {
-                    staffList += `• ${s.name}（${s.title}）\n`;
+                    list += `• ${s.name}（${s.title}）\n`;
                 });
-                return staffList;
+                addMessage(list, 'ai');
+                return;
             }
 
-            // 预约流程
-            switch (state.step) {
-                case 'greeting':
-                    if (msg.includes('预约') || msg.includes('想') || msg.includes('做') || msg.includes('洗') || msg.includes('染') || msg.includes('烫') || msg.includes('剪')) {
-                        state.step = 'service';
-                        return showServices();
-                    }
-                    return KNOWLEDGE.workflow.serviceAsk;
-
-                case 'service':
-                    // 点击服务按钮后，state.step 已更新，这里处理文字输入
-                    for (const service of Object.keys(KNOWLEDGE.services)) {
-                        if (msg.includes(service.replace('+', '')) || service.includes(msg)) {
-                            state.selectedService = service;
-                            state.step = 'staff';
-                            return showStaff(service);
-                        }
-                    }
-                    // 如果输入了其他内容，显示服务列表
-                    return showServices();
-
-                case 'staff':
-                    for (const s of KNOWLEDGE.staff) {
-                        if (msg.includes(s.name)) {
-                            state.selectedStaff = s.name;
-                            state.step = 'form';
-                            return showForm(s);
-                        }
-                    }
-                    return showStaff(null);
-
-                case 'form':
-                    return '请填写上面的预约表单，然后点击"确认预约信息"按钮～';
-
-                default:
-                    state.step = 'service';
-                    return showServices();
+            // 预约意图
+            if (text.includes('预约') || text.includes('想') || text.includes('洗') || text.includes('染') || text.includes('烫') || text.includes('剪')) {
+                state.step = 'service';
+                addMessage('好的，请问您想做哪个服务呢？', 'ai');
+                setTimeout(() => addServiceButtons(), 300);
+                return;
             }
-        }
 
-        // 显示服务列表
-        function showServices() {
-            let content = '请选择您想做的服务：\n\n';
-            addButtons(content, Object.entries(KNOWLEDGE.services).map(([name, info]) => ({
-                html: `<span class="name">${name}</span><span class="price">${info.price}</span>`,
-                text: name,
-                action: () => {
-                    state.selectedService = name;
-                    state.step = 'staff';
-                    const response = showStaff(name);
-                    addMessage(response, 'ai');
-                }
-            })));
-            return ''; // 消息已通过addButtons添加
-        }
-
-        // 显示理发师列表
-        function showStaff(selectedService) {
-            let content = '';
-            if (selectedService) {
-                content = `您选择了【${selectedService}】，价格：${KNOWLEDGE.services[selectedService].price}\n\n`;
-            }
-            content += '请选择理发师：\n\n';
-
-            addButtons(content, KNOWLEDGE.staff.map(s => ({
-                html: `<span><strong>${s.name}</strong> <span class="title">${s.title}</span></span><span style="font-size:12px;color:var(--accent-light)">${s.exp}</span>`,
-                text: s.name,
-                action: () => {
-                    state.selectedStaff = s.name;
-                    state.step = 'form';
-                    const response = showForm(s);
-                    addMessage(response, 'ai');
-                }
-            })));
-            return '';
-        }
-
-        // 显示预约表单
-        function showForm(staff) {
-            const today = new Date().toISOString().split('T')[0];
-            const times = ['10:00', '11:00', '12:00', '13:00', '14:00', '15:00', '16:00', '17:00', '18:00', '19:00', '20:00'];
-
-            return `${staff.name}（${staff.title}，${staff.exp}经验）\n擅长：${staff.special}\n\n请填写预约信息：\n\n<form id="appointmentForm" class="appointment-form">
-<div class="form-group"><label>您的姓名</label><input type="text" id="formName" placeholder="请输入姓名" required></div>
-<div class="form-group"><label>联系电话</label><input type="tel" id="formPhone" placeholder="请输入手机号" required></div>
-<div class="form-group"><label>预约日期</label><input type="date" id="formDate" value="${today}" min="${today}" required></div>
-<div class="form-group"><label>预约时间</label><select id="formTime" required>${times.map(t => `<option value="${t}">${t}</option>`).join('')}</select></div>
-<button type="button" class="form-submit" onclick="submitAppointment()">确认预约信息</button>
-</form>`;
+            // 默认回复
+            addMessage('请问有什么可以帮您的？您可以：\n\n• 说"预约"开始预约服务\n• 问"地址"查看门店位置\n• 问"理发师"查看团队介绍', 'ai');
         }
 
         // 提交预约
         async function submitAppointment() {
+            if (state.isProcessing) return;
+            state.isProcessing = true;
+
             const name = document.getElementById('formName')?.value;
             const phone = document.getElementById('formPhone')?.value;
             const date = document.getElementById('formDate')?.value;
@@ -686,12 +573,13 @@
 
             if (!name || !phone || !date || !time) {
                 alert('请填写完整信息');
+                state.isProcessing = false;
                 return;
             }
 
-            // 验证手机号格式
             if (!/^1[3-9]\d{9}$/.test(phone)) {
                 alert('请输入正确的手机号');
+                state.isProcessing = false;
                 return;
             }
 
@@ -699,16 +587,40 @@
             const appointment = {
                 id: Date.now(),
                 name,
-                phone: phone.slice(0, 3) + '****' + phone.slice(-4), // 脱敏
+                phone: phone.slice(0, 3) + '****' + phone.slice(-4),
                 phoneRaw: phone,
                 service: state.selectedService,
                 servicePrice: KNOWLEDGE.services[state.selectedService]?.price || '',
                 stylist: state.selectedStaff,
                 date,
                 time,
-                createdAt: new Date().toISOString(),
-                status: '待确认'
+                createdAt: new Date().toISOString()
             };
+
+            // 显示成功消息
+            const container = document.getElementById('chatContainer');
+            const msg = document.createElement('div');
+            msg.className = 'message ai';
+            msg.innerHTML = `
+                <div class="message-avatar">💇</div>
+                <div class="message-content">
+                    <div class="success-message">
+                        <div class="emoji">🎉</div>
+                        <h3>预约成功！</h3>
+                        <p>
+                            我们已收到您的预约，稍后会有工作人员电话确认。
+                            <br><br>
+                            📍 到店地址：${KNOWLEDGE.shop.address}
+                            <br>
+                            📞 有问题可致电：${KNOWLEDGE.shop.phone}
+                            <br><br>
+                            期待为您服务！
+                        </p>
+                    </div>
+                </div>
+            `;
+            container.appendChild(msg);
+            container.scrollTop = container.scrollHeight;
 
             // 保存到本地
             const appointments = JSON.parse(localStorage.getItem('xingyi_appointments') || '[]');
@@ -717,55 +629,44 @@
 
             // 同步到GitHub
             if (state.token) {
-                await syncToGitHub(appointment);
+                await syncToGithub(appointment);
             }
 
             state.step = 'success';
-            addMessage(`🎉 预约成功！\n\n我们已收到您的预约，稍后会有工作人员电话确认。\n\n📍 到店地址：青岛市南区万象汇3楼308\n📞 有问题可致电：0532-88888888\n\n期待为您服务！`, 'ai');
+            state.isProcessing = false;
         }
 
         // 同步到GitHub
-        async function syncToGitHub(appointment) {
-            try {
-                // 创建Issue
-                const issueData = {
-                    title: `📅 新预约：${appointment.name} - ${appointment.service}`,
-                    body: `## 预约信息
+        async function syncToGithub(appointment) {
+            const title = `📋 新预约：${appointment.name} - ${appointment.service}`;
+            const body = `
+## 📋 新预约通知
 
-| 项目 | 内容 |
-|------|------|
-| 姓名 | ${appointment.name} |
-| 电话 | ${appointment.phone} |
-| 服务 | ${appointment.service}（${appointment.servicePrice}） |
-| 理发师 | ${appointment.stylist} |
-| 日期 | ${appointment.date} |
-| 时间 | ${appointment.time} |
-| 提交时间 | ${new Date(appointment.createdAt).toLocaleString('zh-CN')} |
+**客户姓名：** ${appointment.name}
+**联系电话：** ${appointment.phoneRaw}
+**预约服务：** ${appointment.service}（${appointment.servicePrice}）
+**预约理发师：** ${appointment.stylist}
+**预约时间：** ${appointment.date} ${appointment.time}
 
 ---
-*由星艺造型系统自动创建*`,
-                    labels: [CONFIG.label]
-                };
+*由星艺造型在线预约系统自动创建*
+            `.trim();
 
-                const response = await fetch(`https://api.github.com/repos/${CONFIG.repo}/issues`, {
+            try {
+                await fetch(`https://api.github.com/repos/${CONFIG.repo}/issues`, {
                     method: 'POST',
                     headers: {
                         'Authorization': `token ${state.token}`,
-                        'Content-Type': 'application/json',
-                        'Accept': 'application/vnd.github.v3+json'
+                        'Content-Type': 'application/json'
                     },
-                    body: JSON.stringify(issueData)
+                    body: JSON.stringify({
+                        title,
+                        body,
+                        labels: [CONFIG.label]
+                    })
                 });
-
-                if (response.ok) {
-                    updateSyncStatus(true);
-                    console.log('预约已同步到GitHub');
-                } else {
-                    const error = await response.json();
-                    console.error('同步失败:', error);
-                }
-            } catch (error) {
-                console.error('同步错误:', error);
+            } catch (e) {
+                console.error('同步失败:', e);
             }
         }
 
@@ -774,7 +675,7 @@
             if (e.key === 'Enter') sendMessage();
         });
 
-        // 初始化
+        // 启动
         init();
     </script>
 </body>
